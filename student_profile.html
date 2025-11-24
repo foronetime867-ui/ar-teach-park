@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2575fc">
+  <title>Student Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #f6fbff;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent1: #2575fc;
+      --accent2: #6a11cb;
+      --danger1: #ff416c;
+      --danger2: #ff4b2b;
+      --radius: 14px;
+      --container: 1080px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(180deg,var(--bg),#eef6ff 60%);
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:24px 16px;
+    }
+
+    .wrap{max-width:var(--container);margin:0 auto}
+
+    .header{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;padding:18px;border-radius:12px;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:white;box-shadow:0 8px 30px rgba(37,117,252,0.12);
+    }
+    .header h1{font-size:1.25rem;margin:0;font-weight:600}
+
+    .menu{position:relative}
+    .menu button{
+      background: rgba(255,255,255,0.08);
+      border: none;
+      padding: 8px;
+      border-radius: 12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:44px;
+      height:44px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 4px 12px rgba(2,6,23,0.12);
+      color: white;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .menu button:hover{transform: translateY(-3px) scale(1.02);box-shadow:0 10px 30px rgba(37,117,252,0.16);background:linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))}
+    .menu button svg{opacity:0.95}
+    .menu button:focus{outline: none; box-shadow:0 0 0 4px rgba(37,117,252,0.14)}
+
+    main{margin-top:22px}
+
+    .profile-grid{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start}
+
+    .card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 6px 20px rgba(3,7,18,0.06)}
+
+    .avatar{display:flex;flex-direction:column;align-items:center;gap:14px}
+    .avatar img{width:160px;height:160px;border-radius:50%;object-fit:cover;border:6px solid white;box-shadow:0 6px 22px rgba(10,20,40,0.08)}
+    .avatar h2{margin:0;font-size:1.125rem}
+    .avatar .meta{color:var(--muted);font-size:0.95rem}
+
+    .info{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .info-item{padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(37,117,252,0.03), rgba(106,17,203,0.02));display:flex;flex-direction:column;gap:6px}
+    .info-item b{font-weight:600}
+    .info-item span{color:var(--muted);font-size:0.96rem}
+
+    .actions{display:flex;gap:12px;margin-top:12px}
+    .btn{padding:10px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:600}
+    .btn.logout{background:linear-gradient(90deg,var(--danger1),var(--danger2));color:white}
+    .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white}
+
+    .details{display:flex;flex-direction:column;gap:14px}
+    .card .section-title{font-weight:700;color:#0b1220}
+    .card p{margin:0;color:var(--muted)}
+
+    /* menu dropdown */
+    .menu-panel{position:absolute;right:0;top:56px;width:280px;background:var(--card);border-radius:12px;padding:8px;box-shadow:0 18px 40px rgba(8,20,60,0.12);opacity:0;transform:translateY(-8px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease;z-index:100}
+    .menu-panel.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    .menu-panel::before{content:'';position:absolute;top:-8px;right:20px;width:12px;height:12px;background:var(--card);transform:rotate(45deg);box-shadow:0 6px 16px rgba(8,20,60,0.06);border-radius:2px}
+    .menu-panel button{width:100%;text-align:left;padding:10px 12px;border-radius:8px;border:none;background:none;color:#111;font-weight:600;display:flex;align-items:center;gap:10px;transition:background .14s ease,color .14s ease,transform .14s ease}
+    .menu-panel button::before{content:'›';color:var(--accent1);font-weight:700;margin-right:6px;opacity:0.95;transform:translateX(0);transition:transform .14s ease}
+    .menu-panel button:hover{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;transform:translateX(6px)}
+    .menu-panel button:hover::before{color:rgba(255,255,255,0.9);transform:translateX(4px)}
+
+    @media (max-width:900px){
+      .profile-grid{grid-template-columns:1fr;}
+      .avatar img{width:140px;height:140px}
+      .menu-panel{right:8px}
+    }
+
+    @media (max-width:420px){
+      .avatar img{width:120px;height:120px}
+      .info{grid-template-columns:1fr}
+      .header{padding:12px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="header" role="banner">
+      <h1 id="pageTitle1">Profile Dashboard</h1>
+      <div class="menu">
+        <button id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="menuPanel" title="Menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+        </button>
+        <div id="menuPanel" class="menu-panel" role="menu">
+          <button role="menuitem" onclick="openResult()">Class Result</button>
+          <button role="menuitem" onclick="openDueHistory()">Due History</button>
+          <button role="menuitem" onclick="navigateToFile('paid.html')">Attendance</button>
+          <button role="menuitem" onclick="openAdmitCard()">Admit Card</button>
+          <button role="menuitem" onclick="openStudentId()">SID Card</button>
+          <button role="menuitem" onclick="navigateToFile('assignments.html')">Quiz</button>
+          <button role="menuitem" onclick="navigateToFile('notices.html')">Class Tacher</button>
+          <button role="menuitem" onclick="navigateToFile('attendance.html')">Heplin</button>
+          <button role="menuitem" onclick="navigateToFile('settings.html')">Link 2</button>
+        </div>
+      </div>
+    </header>
+    <br>
+  <div class="wrap">
+    <header class="header" role="banner">
+      <h1 id="pageTitle2"></h1>
+      <div class="menu">
+      </div>
+    </header>
+
+    <main>
+      <section class="profile-grid">
+        <aside class="card avatar" aria-label="Student avatar and summary">
+          <img id="studentImg" src="" alt="Student Photo">
+          <div>
+            <h2 id="studentName">উপস্থিতি... </h2>
+            <div class="meta" id="studentMeta">•ID</div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" onclick="navigateToFile('student_profile.html')">viwe profile</button>
+            <button class="btn primary" style="background:linear-gradient(90deg,#10b981,#059669)" onclick="openResult()">View Result</button>
+            <button class="btn logout" onclick="logout()">Logout</button>
+          </div>
+        </aside>
+
+        <section class="card details" aria-label="Student details">
+          <div>
+            <div class="section-title">সারসংক্ষেপ</div>
+            <p style="margin-top:8px;color:var(--muted)">আপনার ছাত্র/ছাত্রী সম্পর্কিত গুরুত্বপূর্ণ তথ্য নিচে দেখুন। তথ্য পরিবর্তনের প্রয়োজন হলে অ্যাডমিনের সাথে যোগাযোগ করুন।</p>
+          </div>
+
+          <div class="info" id="studentInfo">
+            <!-- JS will populate items here -->
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // small SVG placeholder as data url
+    function getPlaceholder(){
+      const svg = `
+        <svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 200 200'>
+          <defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='#2575fc'/><stop offset='1' stop-color='#6a11cb'/></linearGradient></defs>
+          <rect width='100%' height='100%' rx='20' fill='url(#g)' />
+          <g transform='translate(40,30)' fill='#fff'><circle cx='60' cy='40' r='30' opacity='0.98'/><path d='M8 140c0-33 52-33 52-33s52 0 52 33v6H8v-6z' fill-opacity='0.98'/></g>
+        </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    // load user data
+    let user = null;
+    try{ user = JSON.parse(localStorage.getItem('user')); }catch(e){ user = null }
+    if(!user){ window.location.href = 'login.html' }
+
+    const imgEl = document.getElementById('studentImg');
+    imgEl.addEventListener('error', ()=>{ imgEl.src = getPlaceholder() });
+    const photoSrc = (user && user.data && user.data[5]) ? user.data[5] : '';
+    imgEl.src = photoSrc || getPlaceholder();
+
+    // fill header info
+    const nameEl = document.getElementById('studentName');
+    const metaEl = document.getElementById('studentMeta');
+    const safe = (idx)=> (user && user.data && user.data[idx]) ? user.data[idx] : '';
+    const headerName = safe(2) || 'ছাত্র/ছাত্রী';
+    nameEl.textContent = headerName;
+
+    // Build page title from row 9 and 10 (with sensible fallbacks)
+    const nine = safe(9);
+    const ten = safe(10);
+    let titleFromRows = '';
+    if (nine && ten) titleFromRows = `• ${ten}`;
+    else if (nine) titleFromRows = nine;
+    else if (ten) titleFromRows = ten;
+    // final fallback: use the student's name
+    if (!titleFromRows) titleFromRows = headerName;
+
+    const pageTitle = document.getElementById('pageTitle1');
+    if (pageTitle) pageTitle.textContent = safe(2) || headerName;
+    const pageTitle2 = document.getElementById('pageTitle2');
+    if (pageTitle2) pageTitle2.textContent = safe(10) || headerName;
+
+    metaEl.textContent = `${safe(0) || 'রোল নেই'}`;
+
+    // populate detail cards
+    const infoEl = document.getElementById('studentInfo');
+    const items = [
+      {k:'Name', v: safe(2)},
+      {k:'ID', v: safe(0)},
+      {k:'Roll', v: safe(3)},
+      {k:'Class', v: safe(4)},
+      {k:'Fathers Name', v: safe(6)},
+      {k:'Phone', v: safe(7)},
+      {k:'Email', v: safe(8)},
+      {k:'Address', v: safe(9)}
+    ];
+    infoEl.innerHTML = items.map(it=> {
+      return `<div class="info-item"><b>${it.k}</b><span>${it.v || '—'}</span></div>`
+    }).join('');
+
+    // menu toggle with accessibility
+    const toggle = document.getElementById('menuToggle');
+    const panel = document.getElementById('menuPanel');
+    toggle.addEventListener('click', (e)=>{
+      const open = panel.classList.toggle('show');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // close on outside click or Escape
+    document.addEventListener('click', (e)=>{ if(!toggle.contains(e.target) && !panel.contains(e.target)){ panel.classList.remove('show'); toggle.setAttribute('aria-expanded','false'); }});
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ panel.classList.remove('show'); toggle.setAttribute('aria-expanded','false'); } });
+
+    function navigateToFile(fileName){
+      if(window.location.pathname.split('/').pop() !== fileName) window.location.href = fileName;
+      panel.classList.remove('show'); toggle.setAttribute('aria-expanded','false');
+    }
+
+    // Open due history page with the current student ID (query param `id`)
+    function openDueHistory(){
+      const id = safe(0) || '';
+      if(!id){ alert('এই ছাত্রের কোন আইডি নেই।'); return }
+      const target = 'school file/due history.html?id=' + encodeURIComponent(id);
+      window.location.href = target;
+      panel.classList.remove('show'); toggle.setAttribute('aria-expanded','false');
+    }
+
+    // Open result page with current student's ID so result page can auto-fill and auto-search
+    function openResult(){
+      const id = safe(0) || '';
+      if(!id){ alert('এই ছাত্রের কোন আইডি নেই।'); return }
+      // encode and open result page; using query param `id`
+      const target = 'school file/result.html?id=' + encodeURIComponent(id);
+      window.location.href = target;
+    }
+
+    // Open admit card page with current student's ID (query param `id`)
+    function openAdmitCard(){
+      const id = safe(0) || '';
+      if(!id){ alert('এই ছাত্রের কোন আইডি নেই।'); return }
+      const target = 'school file/admitCard.html?id=' + encodeURIComponent(id);
+      window.location.href = target;
+      panel.classList.remove('show'); toggle.setAttribute('aria-expanded','false');
+    }
+
+    // Open student ID page (SID) with current student's ID (query param `id`)
+    function openStudentId(){
+      const id = safe(0) || '';
+      if(!id){ alert('এই ছাত্রের কোন আইডি নেই।'); return }
+      const target = 'school file/student id.html?id=' + encodeURIComponent(id);
+      window.location.href = target;
+      panel.classList.remove('show'); toggle.setAttribute('aria-expanded','false');
+    }
+
+    function logout(){ localStorage.removeItem('user'); window.location.href = 'login.html' }
+  </script>
+</body>
+</html>

@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Teach Park — Quiz</title>
+  <style>
+    :root{--brand:#146bff;--accent:#00b894;--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Segoe UI, Roboto, 'Noto Sans Bengali', Arial, sans-serif;background:linear-gradient(180deg,#eef5ff 0,#f6f8fb 100%);color:#0f172a}
+    .container{max-width:920px;margin:16px auto;padding:12px}
+
+    /* Header */
+  .site-header{display:flex;align-items:center;gap:12px;background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 24px rgba(2,6,23,0.06)}
+  .site-header img{width:72px;height:72px;object-fit:contain;border-radius:10px;margin-right:12px}
+  .site-header .titles{display:flex;flex-direction:column}
+  .site-header h1{margin:0;font-size:18px;letter-spacing:0.2px}
+  .site-header p{margin:2px 0 0;color:var(--muted);font-size:13px}
+
+    /* Centered search box */
+  .search-card{margin-top:14px;background:linear-gradient(180deg,#ffffff,#f8fbff);padding:18px;border-radius:14px;display:flex;flex-direction:column;align-items:center;box-shadow:0 10px 30px rgba(2,6,23,0.04)}
+    .search-row{width:100%;display:flex;gap:8px;justify-content:center}
+  .search-row input[type=text]{flex:1;padding:14px 16px;border-radius:12px;border:1px solid #e6edf5;font-size:16px;background:#fbfdff}
+  .search-row button{padding:12px 18px;border-radius:12px;background:var(--brand);color:#fff;border:none;font-weight:700;box-shadow:0 6px 18px rgba(20,107,255,0.12)}
+
+  .autofill{width:100%;margin-top:14px;display:none}
+  .autofill-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:10px;align-items:center;width:100%}
+  .autofill-labels .af-row{padding:8px 6px;color:var(--muted);font-size:14px}
+  .autofill-values .af-row{padding:6px}
+  .autofill-values .af-row input{width:100%;padding:10px;border-radius:10px;border:1px solid #e6edf5;background:#fbfdff}
+  .autofill-actions{width:100%;display:flex;justify-content:center;margin-top:12px}
+
+    /* Rules modal / quiz card */
+  .modal{position:fixed;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(2,6,23,0.35),rgba(2,6,23,0.45));display:flex;align-items:center;justify-content:center;padding:18px;z-index:60}
+  .modal-card{width:100%;max-width:720px;background:linear-gradient(180deg,#fff,#fbfdff);padding:18px;border-radius:14px;box-shadow:0 16px 36px rgba(2,6,23,0.12)}
+    .muted{color:var(--muted)}
+
+    /* Quiz area */
+  .quiz-header{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:linear-gradient(90deg,#fff 0, #fbfdff 100%);margin-top:14px}
+    .info{display:flex;gap:12px;align-items:center;margin-left:auto}
+    .chip{background:#f1f5f9;padding:6px 10px;border-radius:999px;color:#0f172a;font-weight:600}
+
+  .questions{margin-top:12px;background:linear-gradient(180deg,#fff,#fbfdff);padding:14px;border-radius:14px}
+  .q{padding:12px;border-radius:12px;border:1px solid #eef6ff;margin-bottom:12px}
+  .q h4{margin:0 0 8px;font-size:15px}
+  .options{display:flex;flex-direction:column;gap:10px}
+
+    /* radio circle style */
+  .option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;border:1px solid #eef4ff;background:#fff;cursor:pointer;transition:all .18s}
+  .option:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(20,107,255,0.06)}
+  .option input[type=radio]{appearance:none;width:22px;height:22px;border-radius:50%;border:2px solid #cbd5e1;display:inline-block;position:relative;flex:0 0 24px}
+  .option.checked{background:linear-gradient(90deg,#e8f0ff,#f6fbff);border-color:rgba(20,107,255,0.12)}
+  .option input[type=radio]:checked{background:var(--brand);border-color:var(--brand)}
+  .option label{margin:0;flex:1;font-size:15px}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:none;background:var(--brand);color:#fff;font-weight:700}
+    .btn-muted{background:#e6edf5;color:#0f172a}
+
+    .footer-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:12px}
+
+    /* success message */
+    .success{padding:14px;background:linear-gradient(90deg,#ecfdf5,#f0f9ff);border-radius:10px;margin-top:12px;color:#064e3b}
+
+    @media (max-width:560px){
+      .site-header{flex-direction:row}
+      .site-header img{width:64px;height:64px}
+      .autofill label{flex-basis:96px}
+      .container{padding:12px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="site-header">
+      <img src="teach park.png" alt="Teach Park logo" />
+      <div class="titles">
+        <h1>Teach Park — ক্লাস কুইজ</h1>
+        <p> আইডি দিয়ে শুরু করুন</p>
+      </div>
+    </div>
+
+    <div class="search-card">
+      <div class="search-row" style="width:100%">
+        <input id="searchId" type="text" placeholder="আপনার আইডি লিখুন (উদাহরণ S1001 বা P2001)" />
+        <button id="searchBtn">সার্চ</button>
+      </div>
+
+      <div class="autofill" id="autofill">
+        <div class="autofill-grid">
+          <div class="autofill-labels">
+            <div class="af-row">Name</div>
+            <div class="af-row">Class</div>
+            <div class="af-row">ID No.</div>
+            <div class="af-row">Mobile No</div>
+            <div class="af-row">Email</div>
+          </div>
+          <div class="autofill-values">
+            <div class="af-row"><input id="f_name" readonly /></div>
+            <div class="af-row"><input id="f_class" readonly /></div>
+            <div class="af-row"><input id="f_roll" readonly /></div>
+            <div class="af-row"><input id="f_mobile" readonly /></div>
+            <div class="af-row"><input id="f_email" readonly /></div>
+          </div>
+        </div>
+        <div class="autofill-actions">
+          <button id="okBtn" class="btn">ওকে — কুইজ শুরু</button>
+          <button id="changeBtn" class="btn btn-muted" style="display:none;margin-left:8px">অন্য নম্বর সার্চ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules modal (hidden until needed) -->
+    <div id="rulesModal" class="modal" style="display:none">
+      <div class="modal-card">
+        <h3>কুইজের নিয়ম</h3>
+        <ul class="muted">
+          <li>কুইজ মোট ১০টি প্রশ্ন, সময় ৫ মিনিট।</li>
+          <li>প্রতি প্রশ্নে চারটি অপশন আছে; একটি অপশন বাছাই করলে আর পরিবর্তন করা যাবে না।</li>
+          <li>সময় শেষে বা অনুপস্থিতিতে কুইজ নিজে থেকেই সাবমিট হবে।</li>
+          <li>কুইজ শেষ হলে ফলাফল আপনার আইডির সাথে Google Sheets-এ সংরক্ষিত হবে।</li>
+        </ul>
+        <div style="display:flex;justify-content:flex-end;margin-top:12px">
+          <button id="agreeBtn" class="btn">বুঝেছি — কুইজ শুরু</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz area (hidden until started) -->
+    <div id="quizArea" style="display:none">
+      <div class="quiz-header">
+        <img src="Teach Park\Teach Park\teach park.png" alt="logo" style="width:60px;height:60px;border-radius:8px" />
+        <div>
+          <h3 style="margin:0">Teach Park — কুইজ</h3>
+          <p class="muted" style="margin:4px 0 0">আপনি সফলভাবে কুইজে প্রবেশ করেছেন</p>
+        </div>
+        <div class="info">
+          <div class="chip">সময়: <span id="timeLeft">01:00</span></div>
+          <div class="chip">মোট: 10 নম্বর</div>
+        </div>
+      </div>
+
+      <div id="questionsWrap" class="questions"></div>
+
+      <div class="footer-actions">
+        <button id="submitBtn" class="btn">সাবমিট</button>
+        <button id="cancelBtn" class="btn btn-muted">বের হয়ে যান</button>
+      </div>
+
+      <div id="resultMsg" style="display:none" class="success"></div>
+    </div>
+
+  </div>
+
+  <!-- Ensure DATA exists before loading class data -->
+  <script>window.DATA = window.DATA || {classes:{}};</script>
+  <script src="../../data/class-1.js"></script>
+
+  <script>
+    // ------------------- Configuration -------------------
+    // Replace with your deployed Apps Script Web App URL (doPost) where results will be sent
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzFxPE_Dg1fYzCvGs1qnETHj0QOQtfwZKDFp7INiaUjakTU6KbhRwRnlOfuMYtjqva/exec';
+
+    const QUESTIONS = [
+      {q:'বাংলাদেশের রাজধানী কোনটি?', options:['ঢাকা','চট্টগ্রাম','সিলেট','রাজশাহী'], answer:0},
+      {q:'পৃথিবীর সবচেয়ে বড় মহাদেশ কোনটি?', options:['আফ্রিকা','এশিয়া','ইউরোপ','অস্ট্রেলিয়া'], answer:1},
+      {q:'জল কাকে বলে?', options:['দ্রব্য','অণু','উদ্ভিদ','প্রাণী'], answer:0},
+      {q:'প্রতিদিন ২৪ ঘন্টার সমান হয় কত মিনিট?', options:['1440','1200','1000','1500'], answer:0},
+      {q:'সৌরজগতের সবচেয়ে ছোট গ্রহ কোনটি?', options:['মঙ্গল','পৃথিবী','বুধ','বৃহস্পতি'], answer:2},
+      {q:'বাংলার প্রধান নদী কোনটি?', options:['গঙ্গা','মেঘনা','পদ্মা','যমুনা'], answer:2},
+      {q:'প্রতীকী ভাষায় HTML এর পূর্ণরূপ?', options:['Hyper Text Markup Language','High Transfer Markup Language','Hyperlink Text Mark Language','None'], answer:0},
+      {q:'এক ডজনে কয়টি?', options:['10','12','15','8'], answer:1},
+      {q:'মানবদেহে হাড়ের সংখ্যা সাধারনত কত?', options:['206','201','250','300'], answer:0},
+      {q:'বাংলাদেশের স্বাধীনতা বছর কোনটি?', options:['1971','1970','1969','1972'], answer:0}
+    ];
+
+    // ------------------- Utilities -------------------
+    function $(id){return document.getElementById(id)}
+    function hashString(s){let h=0;for(let i=0;i<s.length;i++){h=(h<<5)-h+ s.charCodeAt(i);h|=0;}return Math.abs(h)}
+
+    // Create 4 sets: original, reversed questions, options reversed, both reversed
+    function makeSets(base){
+      const sets = [];
+      const orig = base.map(q => ({q:q.q, options:[...q.options], answer:q.answer}));
+      const revQ = [...orig].reverse();
+      const revOptions = orig.map(it => ({q:it.q, options:[...it.options].reverse(), answer: it.options.length-1 - it.answer}));
+      const revBoth = revOptions.slice().reverse();
+      sets.push(orig, revQ, revOptions, revBoth);
+      return sets;
+    }
+
+    const SETS = makeSets(QUESTIONS);
+
+    // ------------------- Google Sheets lookup integration -------------------
+    // Configure: replace with your deployed Apps Script web app URL which must
+    // return JSON like { data: [ [col0, col1, col2, ...], ... ] }
+    // The webapp should support query param `sheet=main` and `sheet=validation`.
+    const SHEET_GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycby0PlsMhIP-XDhXYsY1kGQogvelcR4PznNObnpROUEIL--UYb2Zac0p1YzxcpJew-8E/exec';
+    const mainSheetURL = SHEET_GAS_WEBAPP_URL + '?sheet=main';
+    const validationSheetURL = SHEET_GAS_WEBAPP_URL + '?sheet=validation';
+
+    // Column indexes (0-based). Adjust these to match your sheet layout.
+    // For this project we support different column layouts for the main
+    // sheet and the validation sheet. Set the appropriate indexes below.
+    // Example main layout (0:id, 1:name, 2:class, 3:phone, 4:email, 5:address)
+    const MAIN_ID_COLUMN_INDEX = 0;    // id column in main sheet
+    const MAIN_PHONE_COLUMN_INDEX = 3; // phone column in main sheet
+
+    // Example validation layout (0:..., 1:phone, 2:..., 3:..., 4:id)
+    const VALID_ID_COLUMN_INDEX = 4;   // id column in validation sheet
+    const VALID_PHONE_COLUMN_INDEX = 1; // phone column in validation sheet
+
+    const NAME_COLUMN_INDEX = 1;  // name in main sheet
+    const EMAIL_COLUMN_INDEX = 2; // email in main sheet
+    const CLASS_COLUMN_INDEX = 11; // class in main sheet
+    const ROLL_COLUMN_INDEX = 0;  // roll column in main sheet (if different from id adjust)
+
+    // Caching and retry settings
+    let cachedMainData = null;
+    let cachedValidationData = null;
+    let lastFetchTime = 0;
+    const DATA_REFRESH_INTERVAL_MS = 30 * 1000; // 30s
+    const FETCH_RETRY_COUNT = 2;
+
+    // Normalize phone: keep digits only and compare last 10 digits
+    function normalizePhoneForSheets(raw) {
+      if (raw === null || typeof raw === 'undefined') return null;
+      const digits = String(raw).replace(/\D+/g, '');
+      if (!digits) return null;
+      return digits.length > 10 ? digits.slice(-10) : digits;
+    }
+
+
+    function rowPhone(row, sheetType = 'main') {
+      if (!Array.isArray(row)) return null;
+      const idx = (sheetType === 'validation') ? VALID_PHONE_COLUMN_INDEX : MAIN_PHONE_COLUMN_INDEX;
+      const raw = row[idx];
+      return normalizePhoneForSheets(raw);
+    }
+
+    function rowId(row, sheetType = 'main') {
+      if (!Array.isArray(row)) return null;
+      const idx = (sheetType === 'validation') ? VALID_ID_COLUMN_INDEX : MAIN_ID_COLUMN_INDEX;
+      const raw = row[idx];
+      if (raw === null || typeof raw === 'undefined') return null;
+      return String(raw).trim();
+    }
+
+    async function fetchSheet(url, cacheBust = true) {
+      const fetchUrl = cacheBust ? (url + (url.includes('?') ? '&' : '?') + 'cb=' + Date.now()) : url;
+      let lastErr = null;
+      for (let attempt = 0; attempt <= FETCH_RETRY_COUNT; attempt++) {
+        try {
+          const res = await fetch(fetchUrl, { cache: 'no-store' });
+          if (!res.ok) throw new Error(res.status + ' ' + res.statusText);
+          const json = await res.json();
+          if (json && Array.isArray(json.data)) {
+            return json.data;
+          }
+          throw new Error('Invalid response from Apps Script: ' + JSON.stringify(json));
+        } catch (err) {
+          lastErr = err;
+          await new Promise(r => setTimeout(r, 300 * (attempt + 1)));
+        }
+      }
+      console.warn('fetchSheet failed', lastErr);
+      return null;
+    }
+
+    async function fetchAndCacheSheets(force = false) {
+      const now = Date.now();
+      if (!force && cachedMainData && cachedValidationData && (now - lastFetchTime) < DATA_REFRESH_INTERVAL_MS) {
+        return; // caches are fresh
+      }
+      const [m, v] = await Promise.all([
+        fetchSheet(mainSheetURL, true),
+        fetchSheet(validationSheetURL, true)
+      ]);
+      if (m) cachedMainData = m;
+      if (v) cachedValidationData = v;
+      lastFetchTime = Date.now();
+    }
+
+    // Background refresh (keep light-weight)
+    setInterval(() => {
+      fetchAndCacheSheets().catch(() => { /* ignore background errors */ });
+    }, DATA_REFRESH_INTERVAL_MS);
+
+    // Find matches in both sheets for a normalized phone string
+    // Find matches in both sheets for either a phone or an ID.
+    // `query` is the raw entered value (could be phone or id). We check both the
+    // phone column (normalized) and the id column (string trimmed).
+    async function findUserInSheetsByQuery(query) {
+      if (!query) return { matches: [], inValidation: false, matchType: null };
+      try {
+        await fetchAndCacheSheets(false);
+      } catch (e) {
+        console.warn('fetchAndCacheSheets failed', e);
+      }
+      const main = Array.isArray(cachedMainData) ? cachedMainData : [];
+      const val = Array.isArray(cachedValidationData) ? cachedValidationData : [];
+      const normPhone = normalizePhoneForSheets(query);
+      let inValidation = false;
+      for (const r of val) {
+        if ((normPhone && rowPhone(r, 'validation') === normPhone) || (rowId(r, 'validation') === String(query).trim())) { inValidation = true; break; }
+      }
+      const matches = [];
+      for (const r of main) {
+        if ((normPhone && rowPhone(r, 'main') === normPhone) || (rowId(r, 'main') === String(query).trim())) matches.push(r);
+      }
+      // determine matchType from first match (phone/id/both)
+      let matchType = null;
+      if (matches.length) {
+        const first = matches[0];
+        const isPhone = normPhone && rowPhone(first) === normPhone;
+        const isId = rowId(first) === String(query).trim();
+        if (isPhone && isId) matchType = 'both';
+        else if (isPhone) matchType = 'phone';
+        else if (isId) matchType = 'id';
+      }
+      return { matches, inValidation, matchType };
+    }
+
+    // ------------------- Data search -------------------
+    function findUserById(id){
+      id = (id||'').trim();
+      if(!id) return null;
+      // Search all classes loaded in window.DATA.classes
+      const classes = window.DATA && window.DATA.classes ? window.DATA.classes : {};
+      for(const key in classes){
+        const cls = classes[key];
+        if(!cls) continue;
+        // students
+        if(Array.isArray(cls.students)){
+          for(const s of cls.students){ if(s.id===id) return {...s, sourceClass: key}; }
+        }
+        // parents: map to child
+        if(Array.isArray(cls.parents)){
+          for(const p of cls.parents){ if(p.id===id){ const child = (cls.students||[]).find(x=>x.id===p.childId); if(child) return {...child, parentId:p.id, sourceClass:key}; }}
+        }
+      }
+      return null;
+    }
+
+    // ------------------- UI wiring -------------------
+    const searchBtn = $('searchBtn');
+    const searchId = $('searchId');
+    const changeBtn = $('changeBtn');
+    const autofill = $('autofill');
+    const okBtn = $('okBtn');
+    const rulesModal = $('rulesModal');
+    const agreeBtn = $('agreeBtn');
+    const quizArea = $('quizArea');
+    const questionsWrap = $('questionsWrap');
+    const timeLeftEl = $('timeLeft');
+    const submitBtn = $('submitBtn');
+    const cancelBtn = $('cancelBtn');
+    const resultMsg = $('resultMsg');
+
+  let currentUser = null;
+  let activeSet = null;
+  let answers = {}; // questionIndex -> chosen option index
+  let timer = null;
+  let secondsLeft =1*60; // 5 minutes
+  let inactivityTimer = null;
+  let submitted = false; // prevent double submit
+
+    function showAutofill(user){
+      $('f_name').value = user.name || '';
+      $('f_class').value = user.class || user.className || '';
+      $('f_roll').value = user.roll || '';
+      $('f_mobile').value = user.mobile || '';
+      // some data files include email
+      var em = user.email || user.emailAddress || '';
+      var emailEl = document.getElementById('f_email'); if(emailEl) emailEl.value = em;
+      autofill.style.display = 'block';
+    }
+
+    // Lock search input/button after successful autofill so other phone numbers cannot be searched
+    function lockSearch() {
+      try { searchId.disabled = true; } catch(e){}
+      try { searchBtn.disabled = true; } catch(e){}
+      if(changeBtn) changeBtn.style.display = '';
+    }
+
+    function unlockSearch() {
+      try { searchId.disabled = false; } catch(e){}
+      try { searchBtn.disabled = false; } catch(e){}
+      if(changeBtn) changeBtn.style.display = 'none';
+    }
+
+    function clearSearchAndFocus(){
+      try{ searchId.value = ''; searchId.focus(); }catch(e){}
+    }
+
+    searchBtn.addEventListener('click', async ()=>{
+      const prevText = searchBtn.textContent;
+      searchBtn.disabled = true;
+      searchBtn.textContent = 'সার্চ করা হচ্ছে...';
+      try {
+        const id = searchId.value.trim();
+        if(!id){ alert('দুঃখিত — আইডি/ফোন দেয়া হয়নি।'); return; }
+
+        // If sheet webapp configured, try sheet lookup first (supports phone or id)
+        if (SHEET_GAS_WEBAPP_URL && !SHEET_GAS_WEBAPP_URL.includes('REPLACE_WITH')){
+          try{
+            const { matches, inValidation, matchType } = await findUserInSheetsByQuery(id);
+
+            // If this ID/phone appears in validation sheet, stop autofill
+            if(inValidation){ alert('এই আইডি/ফোন নম্বরটি ভ্যালিডেশন শিটে আছে — autofill বন্ধ।'); clearSearchAndFocus(); return; }
+
+            if(matches.length === 0){ alert('আইডি/ফোন নম্বর পাওয়া যায়নি।'); clearSearchAndFocus(); return; }
+            if(matches.length > 1){ alert('একাধিক মিল পাওয়া গেছে — ম্যানুয়ালি যাচাই করুন।'); clearSearchAndFocus(); return; }
+
+            const row = matches[0];
+            const user = {
+              name: row[NAME_COLUMN_INDEX] || '',
+              class: row[CLASS_COLUMN_INDEX] || '',
+              roll: row[ROLL_COLUMN_INDEX] || '',
+              mobile: row[MAIN_PHONE_COLUMN_INDEX] || '',
+              email: row[EMAIL_COLUMN_INDEX] || '',
+              sourceClass: 'sheet'
+            };
+
+            currentUser = {...user, enteredId: id};
+            showAutofill(user);
+            const idx = hashString(id) % SETS.length;
+            activeSet = SETS[idx];
+            // lock search so other phone/id cannot be searched until user clicks change
+            try { searchId.disabled = true; } catch(e){}
+            try { searchBtn.disabled = true; } catch(e){}
+            if(changeBtn) changeBtn.style.display = '';
+            // restore button text to normal locked state
+            searchBtn.textContent = prevText;
+            return;
+          }catch(err){
+            console.warn('Sheet lookup failed, falling back to local DATA',err);
+            // fallthrough to local DATA fallback
+          }
+        }
+
+        // Fallback: existing in-page DATA lookup
+        const user = findUserById(id);
+        if(!user){ alert('দুঃখিত — আইডি পাওয়া যায়নি। অনুগ্রহ করে সঠিক আইডি ব্যবহার করুন।'); clearSearchAndFocus(); return; }
+        // NOTE: persistent "already submitted" checks have been disabled — no localStorage used
+        currentUser = {...user, enteredId: id};
+        showAutofill(user);
+        const idx = hashString(id) % SETS.length;
+        activeSet = SETS[idx];
+        // lock search so other phone cannot be searched until user clicks change
+        try { searchId.disabled = true; } catch(e){}
+        try { searchBtn.disabled = true; } catch(e){}
+        if(changeBtn) changeBtn.style.display = '';
+        // restore button text to normal locked state
+        searchBtn.textContent = prevText;
+      } finally {
+        // Only restore button if not locked (searchId enabled)
+        if (!(searchBtn.disabled && searchId.disabled)) {
+          searchBtn.disabled = false;
+          searchBtn.textContent = prevText;
+        }
+      }
+    });
+
+    okBtn.addEventListener('click',()=>{
+      if(!currentUser){ alert('প্রথমে আইডি সার্চ করে নিতে হবে।'); return; }
+      rulesModal.style.display = 'flex';
+    });
+
+    agreeBtn.addEventListener('click',()=>{ rulesModal.style.display='none'; startQuiz(); });
+
+    function startQuiz(){
+      // render questions (first 10)
+      answers = {};
+      secondsLeft = 5*60;
+      timeLeftEl.textContent = formatTime(secondsLeft);
+      questionsWrap.innerHTML = '';
+      // hide autofill/search area when quiz starts
+      try{ autofill.style.display = 'none'; }catch(e){}
+      quizArea.style.display = 'block';
+
+      // ensure we have at least 10 questions
+      const qlist = activeSet.slice(0,10);
+      qlist.forEach((qobj, qi)=>{
+        const qdiv = document.createElement('div'); qdiv.className='q';
+        const h = document.createElement('h4'); h.textContent = (qi+1)+'. '+qobj.q; qdiv.appendChild(h);
+        const opts = document.createElement('div'); opts.className='options';
+        qobj.options.forEach((opt, oi)=>{
+          const o = document.createElement('div'); o.className='option';
+          const radio = document.createElement('input'); radio.type='radio'; radio.name='q'+qi; radio.dataset.q=qi; radio.dataset.opt=oi;
+          radio.addEventListener('change', onAnswerSelected);
+          const label = document.createElement('label'); label.textContent = opt;
+          // make the whole option clickable/tappable
+          o.appendChild(radio); o.appendChild(label); opts.appendChild(o);
+          o.addEventListener('click', function(e){
+            if(radio.disabled) return; // locked
+            radio.checked = true;
+            // visually mark
+            o.classList.add('checked');
+            // trigger change event handler
+            radio.dispatchEvent(new Event('change'));
+          });
+        });
+        qdiv.appendChild(opts); questionsWrap.appendChild(qdiv);
+      });
+
+      // start timers
+      startTimer();
+      resetInactivity();
+      ['click','keydown','touchstart'].forEach(e=>document.addEventListener(e, resetInactivity));
+    }
+
+    function onAnswerSelected(e){
+      const q = e.target.dataset.q; const opt = parseInt(e.target.dataset.opt,10);
+      // lock all radios of this question
+      const group = document.getElementsByName('q'+q);
+      for(const r of group){ r.disabled = true; }
+      answers[q]=opt;
+    }
+
+    function startTimer(){
+      if(timer) clearInterval(timer);
+      timer = setInterval(()=>{
+        secondsLeft--; timeLeftEl.textContent = formatTime(secondsLeft);
+        if(secondsLeft<=0){ clearInterval(timer); autoSubmit('সময় শেষ'); }
+      },1000);
+    }
+
+    function resetInactivity(){
+      if(inactivityTimer) clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(()=>{ autoSubmit('অনুপস্থিতির কারণে স্বয়ংক্রিয় সাবমিট'); }, 60*1000);
+    }
+
+    function formatTime(s){ const m = Math.floor(s/60).toString().padStart(2,'0'); const sec = (s%60).toString().padStart(2,'0'); return `${m}:${sec}`; }
+
+    submitBtn.addEventListener('click', ()=>{ if(confirm('আপনি কি কুইজ সাবমিট করতে চান?')) submitQuiz('user_submit'); });
+    cancelBtn.addEventListener('click', ()=>{ if(confirm('বাতিল করতে চান?')) location.href = '../index.html'; });
+
+    function collectResult(reason){
+      // compute score
+      const qcount = Math.min(10, activeSet.length);
+      let score=0; const details=[];
+      for(let i=0;i<qcount;i++){
+        const qobj = activeSet[i];
+        const chosen = answers[i];
+        const correct = qobj.answer;
+        const isCorrect = (typeof chosen!=='undefined') && (chosen===correct);
+        if(isCorrect) score++;
+        details.push({question:qobj.q, chosen: typeof chosen==='undefined'?null:qobj.options[chosen], correct:qobj.options[correct], isCorrect});
+      }
+
+      const payload = {
+        timestamp: new Date().toISOString(),
+        reason: reason || 'user',
+        // Send phone number in place of userId (normalized when possible).
+        userId: normalizePhoneForSheets(currentUser.mobile || currentUser.enteredId) || (currentUser.mobile || currentUser.enteredId || ''),
+        name: currentUser.name,
+        class: currentUser.class || currentUser.sourceClass,
+        roll: currentUser.roll,
+        mobile: currentUser.mobile || '',
+        email: currentUser.email || '',
+        score: score,
+        total: qcount,
+        details: details
+      };
+      return payload;
+    }
+
+    async function submitQuiz(reason){
+      // stop timers
+      if(timer) clearInterval(timer);
+      if(inactivityTimer) clearTimeout(inactivityTimer);
+      if(submitted) return; // already handled
+      submitted = true;
+      const payload = collectResult(reason);
+      // Do NOT show the numeric score to the student — only a generic success message
+      resultMsg.style.display='block'; resultMsg.textContent = 'সফলভাবে সাবমিট করা হয়েছে। আপনার উত্তর সংগ্রহ করা হয়েছে।'; 
+
+      // attempt to send to Apps Script; if fails, enqueue for later
+      try{
+        await sendToServer(payload);
+        resultMsg.textContent = 'সফলভাবে সাবমিট করা হয়েছে। আপনার ফলাফল সার্ভারে পাঠানো হয়েছে।';
+      } catch(err){
+        enqueuePending(payload);
+        resultMsg.textContent = 'সফলভাবে সাবমিট করা হয়েছে। তবে ইন্টারনেট না থাকার কারণে ফলাফল লোকালি সংরক্ষণ করা হয়েছে এবং পরে পাঠানো হবে।';
+      }
+
+      // persistent "already submitted" tracking disabled (no localStorage writes)
+
+      // reset UI: hide quiz area, show search; clear autofill and answers
+      setTimeout(()=>{
+        quizArea.style.display = 'none';
+        autofill.style.display = 'none';
+        searchId.value = '';
+        currentUser = null;
+        activeSet = null;
+        answers = {};
+        submitted = false; // allow future users
+        resultMsg.style.display = 'none';
+      }, 1200);
+    }
+
+    async function sendToServer(data){
+      if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('REPLACE_WITH')) throw new Error('APPS_SCRIPT_URL not configured');
+      // Build explicit form fields so Apps Script receives each value as parameter
+      const form = new URLSearchParams();
+      form.append('userId', data.userId || '');
+      form.append('timestamp', data.timestamp || new Date().toISOString());
+      form.append('name', data.name || '');
+      form.append('class', data.class || '');
+      form.append('roll', data.roll || '');
+      form.append('mobile', data.mobile || '');
+      form.append('email', data.email || '');
+      form.append('score', String(data.score || ''));
+      form.append('total', String(data.total || ''));
+      form.append('details', JSON.stringify(data.details || []));
+      form.append('reason', data.reason || '');
+
+      // 1) Try navigator.sendBeacon (works during unload)
+      if(navigator.onLine && navigator.sendBeacon){
+        try{
+          const blob = new Blob([form.toString()], {type: 'application/x-www-form-urlencoded'});
+          const ok = navigator.sendBeacon(APPS_SCRIPT_URL, blob);
+          if(ok) return {ok:true, method:'beacon'};
+        }catch(e){ /* fallback to fetch */ }
+      }
+
+      // 2) Try fetch normally
+      try{
+        const res = await fetch(APPS_SCRIPT_URL, {method:'POST', body: form, headers: {'Content-Type':'application/x-www-form-urlencoded'}});
+        if(res && res.ok){ try{ return await res.json(); }catch(e){ return {ok:true, method:'fetch'}; } }
+        return {ok:false, status: res && res.status};
+      }catch(err){
+        // 3) Last resort: no-cors fetch (opaque, but may deliver)
+        try{ await fetch(APPS_SCRIPT_URL, {method:'POST', body: form, mode:'no-cors'}); return {ok:true, method:'no-cors'}; }
+        catch(e){ throw err; }
+      }
+    }
+
+    // local (in-memory) pending queue when offline — not persisted to localStorage
+    let pendingQueue = [];
+    function enqueuePending(obj){ pendingQueue.push(obj); }
+    async function flushPending(){
+      if(!navigator.onLine) return;
+      if(!pendingQueue.length) return;
+      const remaining = [];
+      for(const p of pendingQueue){
+        try{ await sendToServer(p); }
+        catch(e){ console.warn('flush failed', e); remaining.push(p); break; }
+      }
+      pendingQueue = remaining;
+    }
+
+    // auto submit helper
+    function autoSubmit(reason){ if(!currentUser) return; submitQuiz(reason).catch(()=>{}); }
+
+    // send beacon on unload as best-effort; if offline, enqueue
+    window.addEventListener('beforeunload', ()=>{
+      if(!currentUser) return;
+      if(submitted) return; // already handled
+      const payload = collectResult('unload');
+      try{
+        // send form-encoded payload via beacon if possible
+        if(navigator.onLine && navigator.sendBeacon && APPS_SCRIPT_URL && !APPS_SCRIPT_URL.includes('REPLACE_WITH')){
+          const form = new URLSearchParams();
+          form.append('userId', payload.userId || '');
+          form.append('timestamp', payload.timestamp || new Date().toISOString());
+          form.append('name', payload.name || '');
+          form.append('class', payload.class || '');
+          form.append('roll', payload.roll || '');
+          form.append('mobile', payload.mobile || '');
+          form.append('email', payload.email || '');
+          form.append('score', String(payload.score || ''));
+          form.append('total', String(payload.total || ''));
+          form.append('details', JSON.stringify(payload.details || []));
+          form.append('reason', payload.reason || 'unload');
+          const blob = new Blob([form.toString()], {type:'application/x-www-form-urlencoded'});
+          navigator.sendBeacon(APPS_SCRIPT_URL, blob);
+        } else {
+          // offline or beacon unavailable: do NOT persist locally (localStorage disabled)
+          // We skip enqueueing to avoid storing data in localStorage per user request.
+          console.warn('Unload: offline and persistence disabled; payload not saved locally.');
+        }
+      }catch(e){
+        console.warn('Unload: failed to send payload and persistence disabled', e);
+      }
+      submitted = true;
+    });
+
+    // when coming online, flush pending
+    window.addEventListener('online', ()=>{ flushPending(); });
+
+    // Allow user to change the searched phone number — re-enable search UI
+    if (changeBtn) {
+      changeBtn.addEventListener('click', ()=>{
+        // clear autofill and allow searching another phone
+        try{ searchId.value = ''; }catch(e){}
+        try{ autofill.style.display = 'none'; }catch(e){}
+        try{ currentUser = null; }catch(e){}
+        try{ activeSet = null; }catch(e){}
+        unlockSearch();
+      });
+    }
+
+    // Auto-submit on visibility loss/back navigation
+    document.addEventListener('visibilitychange', ()=>{
+      if(document.visibilityState==='hidden'){
+        // treat as critical: attempt to submit
+        if(currentUser) autoSubmit('visibility_hidden');
+      }
+    });
+
+    // Try to flush pending every minute
+    setInterval(()=>flushPending(), 60*1000);
+
+    // If user tries to search using enter key
+    searchId.addEventListener('keyup', e=>{ if(e.key==='Enter') searchBtn.click(); });
+
+    // If APPS_SCRIPT_URL not configured, show warn in console
+    if(APPS_SCRIPT_URL.includes('REPLACE_WITH')) console.warn('Please set APPS_SCRIPT_URL variable in the HTML to your Apps Script web app URL.');
+  </script>
+</body>
+</html>

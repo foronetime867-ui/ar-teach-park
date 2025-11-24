@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR TEACH PARK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-section:hover {
+            transform: scale(1.05);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .site-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-item {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item:hover {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger-line {
+            width: 25px;
+            height: 3px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(15, 15, 35, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: slideInFromTop 0.3s ease-out;
+        }
+
+        .mobile-menu-overlay.active {
+            display: flex;
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-nav-menu {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-nav-item {
+            margin: 1.5rem 0;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mobile-nav-item:hover {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .mobile-nav-item.active {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page-section {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Page */
+        .home-section {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .welcome-headline {
+            font-size: 3.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: slideInDown 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        .notice-board {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .scrolling-text {
+            white-space: nowrap;
+            animation: scrollRight 30s linear infinite;
+            color: #4ecdc4;
+            font-weight: 500;
+        }
+
+        @keyframes scrollRight {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .sliding-images {
+            margin: 3rem 0;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-container {
+            display: flex;
+            animation: slideUp 2s ease-out, scrollLeft 10s linear 2s infinite;
+        }
+
+        .slide-image {
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            margin: 0 1rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        @keyframes scrollLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* About Page */
+        .about-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .team-profiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+           
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .profile-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .profile-card.expanded .profile-details {
+            max-height: 200px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .about-text {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .text-block {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Services Page */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        /* Gallery Page */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .modal-prev { left: -60px; }
+        .modal-next { right: -60px; }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Contact Page */
+        .contact-form {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4ecdc4;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #b0b0b0;
+        }
+
+        /* Chatbot */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1500;
+        }
+
+        .chat-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbox {
+            display: none;
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 300px;
+            height: 400px;
+            background: rgba(15, 15, 35, 0.95);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .chatbox.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            font-weight: bold;
+            color: #4ecdc4;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .chat-send {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .bot-message {
+            background: rgba(255, 255, 255, 0.1);
+            margin-right: auto;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 15, 35, 0.95);
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #4ecdc4;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links li:hover {
+            color: #4ecdc4;
+        }
+
+        .message-box {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b0b0b0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .welcome-headline {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .chatbox {
+                width: 280px;
+                height: 350px;
+            }
+
+            .modal-nav {
+                display: none;
+            }
+
+            .team-profiles {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .about-text {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0.8rem 1rem;
+            }
+
+            .site-name {
+                font-size: 1.2rem;
+            }
+
+            .logo {
+                width: 35px;
+                height: 35px;
+                margin-right: 8px;
+            }
+
+            .welcome-headline {
+                font-size: 2rem;
+            }
+
+            .home-section {
+                padding: 2rem 1rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-image {
+                width: 250px;
+                height: 150px;
+            }
+
+            .sliding-images {
+                height: 150px;
+            }
+
+            .mobile-nav-item {
+                font-size: 1.5rem;
+                margin: 1rem 0;
+            }
+
+            .chatbox {
+                width: calc(100vw - 40px);
+                height: 300px;
+                right: 20px;
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+                <!-- Tutorial Page -->
+        <section >
+
+            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Our Tutorial</h2>
+            <h3 class="welcome-headline//" style="margin: 0; color: red; text-align: center;">এই ওয়েবসাইট এর কাজ চলমান তাই কোন ফিচার কাজ না করলে আপডেট এর জন্য অপেক্ষা করুন।</h3> 
+<br>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3>Online Learning</h3>
+                    <p>Interactive online classes with experienced instructors, flexible scheduling, and comprehensive digital resources for remote learning.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('Learn more about our online learning programs!')">Learn More</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">📚</div>
+                    <h3>Digital Library</h3>
+                    <p>Access to thousands of Islamic books, research papers, and multimedia resources available 24/7 for all registered students.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('Explore our extensive digital library!')">Learn More</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">🎓</div>
+                    <h3>Special Events</h3>
+                    <p>Regular seminars, workshops, and conferences featuring renowned Islamic scholars and educators from around the world.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('Check out our upcoming events!')">Learn More</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">🤝</div>
+                    <h3>Student Counseling</h3>
+                    <p>Professional guidance and support services to help students navigate their academic journey and personal development.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('Schedule a counseling session!')">Learn More</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">🌍</div>
+                    <h3>Community Outreach</h3>
+                    <p>Programs designed to serve the local community through educational initiatives and social welfare activities.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('Join our community programs!')">Learn More</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">📜</div>
+                    <h3>Certification Programs</h3>
+                    <p>Accredited certificate courses in various Islamic studies disciplines with recognized qualifications.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('View our certification programs!')">Learn More</button>
+                </div>
+            </div>
+        </section>
+        <!-- Back Button -->
+<button onclick="history.back()" 
+        style="position: fixed; 
+               top: 50%; 
+               left: 0; 
+               transform: translateY(-50%); 
+               background-color: #007BFF; 
+               color: white; 
+               border: none; 
+               padding: 12px 18px; 
+               border-radius: 0 8px 8px 0; 
+               cursor: pointer; 
+               font-size: 16px;
+               box-shadow: 2px 2px 8px rgba(0,0,0,0.3);">
+    ⬅ Back
+</button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div ><img class="logo" src="logo.png" alt="AH"></div>
+                    <div style="margin-left: 10px;">
+                        <h3>AR TEACH PARK</h3>
+                        <p>Nithpur, Poraha, Naogaon</p>
+                    </div>
+                </div>
+                <p>Building Strong Foundations through Private Learning,
+Empowering Minds with Computer Training,
+Where Education Meets Technology."</p>
+            </div>
+
+            
+
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+<p>📍 
+    <a href="https://www.google.com/maps?q=6550+Nithpur+Porsha+Naogaon" target="_blank" style="color: #ffffff;">
+        6550 Nithpur, Porsha, Naogaon
+    </a>
+</p>
+                <p><a href="tel:+8801628411467" style="color: inherit; text-decoration: none;">📞 +8801628411467</a></p>
+                <p><a href="mailto:ararafatr162@gmail.com" style="color: inherit; text-decoration: none;">✉️ ararafatr162@gmail.com</a></p>
+                <div class="social-icons" style="justify-content: flex-start; margin-top: 1rem;">
+                    <a href="https://www.facebook.com/your.profile.link" target="_blank"  class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.facebook.com/your.profile.link" target="_blank"  class="social-icon"><i class="fab fa-x-twitter"></i></a>
+                    <a href="tel:+8801628411467" class="social-icon">📞</a>
+                    <a href="mailto:ararafatr162@gmail.com" class="social-icon">✉️</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Send us a Message</h3>
+                <div class="message-box">
+                    <input type="text" class="message-input" placeholder="Your message..." id="footerMessage">
+                    <button class="btn" onclick="sendFooterMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>© 2024-2025 AR TEACH PARK. All Rights Reserved.</p>
+        </div>
+    </footer>
+<script>
+    function goTohome(){
+        window.location.href='index.html';
+    }
+</script>
+</body>
+</html>

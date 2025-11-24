@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR TEACH PARK</title>
+    <link rel="icon" type="image/png" href="teach park.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        /* Design tokens so subtitle can scale relative to headline */
+        :root {
+            /* headline size expressed as a responsive clamp so we can reuse it */
+            --headline-size: clamp(1.6rem, 4.5vw, 3.5rem);
+        }
+
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-section:hover {
+            transform: scale(1.05);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            margin-right: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .site-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-item {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item:hover {
+            background: linear-gradient(45deg, #0fff2f, #5e9ce2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger-line {
+            width: 25px;
+            height: 3px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(15, 15, 35, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: slideInFromTop 0.3s ease-out;
+        }
+
+        .mobile-menu-overlay.active {
+            display: flex;
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-nav-menu {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-nav-item {
+            margin: 1.5rem 0;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mobile-nav-item:hover {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .mobile-nav-item.active {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page-section {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Page */
+        .home-section {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .welcome-headline {
+            /* responsive font-size so headline auto-fits smaller screens (driven by a CSS variable)
+               using a variable lets the subtitle size itself to a percentage of the headline. */
+            font-size: var(--headline-size);
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: slideInDown 1s ease-out;
+            /* Keep headline on a single line */
+            white-space: nowrap;
+            /* letter-spacing scales with viewport so spacing reduces on small screens */
+            letter-spacing: clamp(0.12em, 1.6vw, 0.5em);
+        }
+
+        .subtitle {
+            /* subtitle will be approximately half the headline size. The clamp ensures
+               it never becomes unreadably small or excessively large on very large screens. */
+            font-size: clamp(0.8rem, calc(var(--headline-size) * 0.5), 1.8rem);
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out 0.3s both;
+            white-space: nowrap;
+            letter-spacing: clamp(0.08em, 0.9vw, 0.35em);
+        }
+
+        .notice-board {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .scrolling-text {
+            white-space: nowrap;
+            animation: scrollLeft 10s linear infinite;
+            color: #4ecdc4;
+            font-weight: 500;
+        }
+
+        @keyframes scrollLeft {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(45deg, #1ae657, #1606ee);
+            color: rgb(0, 0, 0);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .sliding-images {
+            margin: 3rem 0;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-container {
+            display: flex;
+            /* slide in from bottom once, then continuously scroll left */
+            animation: slideUp 0.6s ease-out, scrollLeft 10s linear infinite;
+        }
+
+        .slide-image {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #4ff04f, #a4e956);
+            margin: 0 1rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            overflow: hidden; /* ensure images are clipped to rounded corners */
+        }
+
+        /* Make images inside the sliding carousel fit entirely inside the slide box (no crop)
+           This uses contain so the whole image is visible; background will show if aspect ratios differ. */
+        .sliding-images .slide-image img,
+        .sliding-images img.logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* show whole image */
+            object-position: center center;
+            display: block;
+            background: #00000020; /* subtle background to avoid harsh empty gaps */
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        @keyframes scrollLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* About Page */
+        .about-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .team-profiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+           
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .profile-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .profile-card.expanded .profile-details {
+            max-height: 200px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .about-text {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .text-block {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Services Page */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        /* Gallery Page */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .modal-prev { left: -60px; }
+        .modal-next { right: -60px; }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Contact Page */
+        .contact-form {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4ecdc4;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #b0b0b0;
+        }
+
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 15, 35, 0.95);
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #4ecdc4;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links li:hover {
+            color: #4ecdc4;
+        }
+
+        .message-box {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b0b0b0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .welcome-headline {
+                /* medium screens: clamp() already covers this, but keep conservative caps */
+                font-size: clamp(1.8rem, 4vw, 2.5rem);
+                letter-spacing: clamp(0.12em, 1.2vw, 0.35em) !important;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+                letter-spacing: clamp(0.08em, 0.7vw, 0.25em) !important;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+
+            .modal-nav {
+                display: none;
+            }
+
+            .team-profiles {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .about-text {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0.8rem 1rem;
+            }
+
+            .site-name {
+                font-size: 1.2rem;
+            }
+
+            .logo {
+                width: 35px;
+                height: 35px;
+                margin-right: 8px;
+            }
+
+            .welcome-headline {
+                font-size: 1.4rem;
+                /* very small spacing on narrow screens so the full headline fits */
+                letter-spacing: 0.12em !important;
+            }
+
+            .home-section {
+                padding: 2rem 1rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-image {
+                width: 250px;
+                height: 150px;
+            }
+
+            .sliding-images {
+                height: 150px;
+            }
+
+            .mobile-nav-item {
+                font-size: 1rem;
+                letter-spacing: 0.12em !important;
+                margin: 1rem 0;
+            }
+
+        }
+
+    
+   
+        
+
+
+
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo-section" onclick="showPage('home')">
+            <div><img class="logo" src="teach park.png" alt="AH"></div>
+            <div class="site-name">AR Teach Park 
+</div>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="showPage('home')">হোম</li>
+            <li class="nav-item" onclick="showPage('about')">আমাদের সমন্ধে</li>
+            <li class="nav-item" onclick="showPage('services')">সেবা</li>
+            <li class="nav-item" onclick="showPage('gallery')">গ্যালারি</li>
+            <li class="nav-item" onclick="showPage('contact')">যোগাযোগ</li>
+            <li class="nav-item" onclick="goToExam()">Exam</li>
+            <li class="nav-item" onclick="goTotutorial()">টিউটেরিয়াল</li>
+            <li class="nav-item" onclick="goTocollect()">তথ্য সংগ্রহ করুন</li>
+
+        </ul>
+        <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <ul class="mobile-nav-menu">
+            <li class="mobile-nav-item active" onclick="showPageMobile('home')">হোম</li>
+            <li class="mobile-nav-item" onclick="showPageMobile('about')">আমাদের সমন্ধে</li>
+            <li class="mobile-nav-item" onclick="showPageMobile('services')">সেবা</li>
+            <li class="mobile-nav-item" onclick="showPageMobile('gallery')">গ্যালারি</li>
+            <li class="mobile-nav-item" onclick="showPageMobile('contact')">যোগাযোগ</li>
+            <li class="mobile-nav-item" onclick="goToExam()">Exam</li>
+            <li class="mobile-nav-item" onclick="goTotutorial()">টিউটেরিয়াল</li>
+            <li class="mobile-nav-item" onclick="goTocollect()">তথ্য সংগ্রহ করুন</li>
+
+
+        </ul>
+    </div>
+
+   <!-- Main Content -->
+<main class="main-content">
+    <!-- Home Page -->
+              <section id="home" class="page-section active home-section">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-left: auto; margin-right: auto; max-width: 600px;">
+            <img class="logo" src="teach park.png" alt="AH" style="width: 70px; height: 70px;">
+            <div style="text-align: center;">
+                <h1 class="welcome-headline" style="margin: 0; letter-spacing: 0.5em;">AR TEACH PARK</h1>
+                <p class="subtitle" style="margin: 0; letter-spacing: 0.35em; text-align: center;">Nithpur, Porsha</p>
+            </div>
+        </div>
+    
+
+
+            
+            <div class="notice-board">
+                <div class="scrolling-text">📢 • আমাদের প্রতিষ্ঠানে নতুন ছাত্র/ ছাত্রী ভর্তি চলছে।  • নতুন শিক্ষক এবং শিক্ষিকা নিয়োগ নেওয়া হচ্ছে।  • তাই আজই আমাদের সাথে যোগাযোগ করুন।</div>
+            </div>
+            <div class="action-buttons">
+    <button class="btn" onclick=" window.location.href='login.html';">
+        লগইন করুন
+    </button>
+    
+    <button class="btn" onclick=" window.location.href='apply2.html';">
+        আবেদন করুন
+    </button>
+
+</div>
+
+
+
+            <div class="sliding-images">
+                <div class="image-container">
+                    <div class="slide-image"><img  src="profile222.png" alt="AH"></div>
+                    <div class="slide-image"><img  src="teach park.png" alt="AH"></div>
+                    <div class="slide-image"><img  src="teach park.png" alt="AH"></div>
+                    <div class="slide-image"><img  src="teach park.png" alt="AH"></div>
+                    <!-- duplicated set for seamless loop -->
+                    <div class="slide-image"><img  src="profile222.png" alt="AH"></div>
+                    <div class="slide-image"><img  src="teach park.png" alt="AH"></div>
+                    <div class="slide-image"><img  src="teach park.png" alt="AH"></div>
+                    <div class="slide-image"><img  src="teach park.png" alt="AH"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Page -->
+        <section id="about" class="page-section about-section">
+            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">About Our Academy</h2>
+            
+            <div class="team-profiles">
+                <div class="profile-card" onclick="toggleProfile(this)">
+                    <div class="profile-pic"><img class="logo" src="profile222.png" alt="AH"></div>
+                    <h3>AR Arafat Rahman</h3>
+                    <p>Principal</p>
+                    <div class="profile-details">
+                        <p></p>
+                    </div>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/arafat2112008rahman" class="social-icon">📘</a>
+                        <a href="https://www.facebook.com/arafat2112008rahman" class="social-icon">📺</a>
+                        <a href="tel:+8801628411467" class="social-icon">📱</a>
+                        <a href="mailto:ararafatr162@gmail.com.com" class="social-icon">✉️</a>
+                    </div>
+                </div>
+
+
+            <div class="about-text">
+                <div class="text-block">
+                    <h3 style="color: #4ecdc4; margin-bottom: 1rem;">Our Mission</h3>
+                    <p>At Al Helal Islamy Academy, we are dedicated to providing comprehensive Islamic education that nurtures both spiritual and intellectual growth. Our mission is to create a learning environment where students can develop a deep understanding of Islamic principles while acquiring modern knowledge and skills necessary for success in today's world.</p>
+                </div>
+                <div class="text-block">
+                    <h3 style="color: #4ecdc4; margin-bottom: 1rem;">Our Vision</h3>
+                    <p>We envision a future where Islamic education seamlessly integrates with contemporary learning methodologies, producing well-rounded individuals who are confident in their faith and capable of contributing positively to society. Our goal is to be a leading institution that bridges traditional Islamic scholarship with modern educational excellence.</p>
+                </div>
+                <div class="text-block">
+                    <h3 style="color: #4ecdc4; margin-bottom: 1rem;">Our Values</h3>
+                    <p>Excellence in education, integrity in character, compassion in service, and innovation in teaching are the core values that guide everything we do. We believe in fostering an inclusive environment where every student feels valued and supported in their educational journey, regardless of their background or level of prior knowledge.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Page -->
+        <section id="services" class="page-section">
+            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Our Services</h2>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3>Online Learning</h3>
+                    <p>Interactive online classes with experienced instructors, flexible scheduling, and comprehensive digital resources for remote learning.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('Learn more about our online learning programs!')">Learn More</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">📚</div>
+                    <h3>Digital Library</h3>
+                    <p>Access to thousands of Islamic books, research papers, and multimedia resources available 24/7 for all registered students.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('Explore our extensive digital library!')">Learn More</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">🎓</div>
+                    <h3>Special Events</h3>
+                    <p>Regular seminars, workshops, and conferences featuring renowned Islamic scholars and educators from around the world.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('Check out our upcoming events!')">Learn More</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">🤝</div>
+                    <h3>Student Counseling</h3>
+                    <p>Professional guidance and support services to help students navigate their academic journey and personal development.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('Schedule a counseling session!')">Learn More</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">🌍</div>
+                    <h3>Community Outreach</h3>
+                    <p>Programs designed to serve the local community through educational initiatives and social welfare activities.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('Join our community programs!')">Learn More</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">📜</div>
+                    <h3>Certification Programs</h3>
+                    <p>Accredited certificate courses in various Islamic studies disciplines with recognized qualifications.</p>
+                    <button class="btn" style="margin-top: 1rem;" onclick="alert('View our certification programs!')">Learn More</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Page -->
+        <section id="gallery" class="page-section">
+            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Gallery</h2>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="openModal(0)"><img class="logo" src="logo.png" alt="AH"></div>
+                <div class="gallery-item" onclick="openModal(1)">Library</div>
+                <div class="gallery-item" onclick="openModal(2)">Classroom</div>
+                <div class="gallery-item" onclick="openModal(3)">Event Hall</div>
+                <div class="gallery-item" onclick="openModal(4)">Campus View 2</div>
+                <div class="gallery-item" onclick="openModal(5)">Study Area</div>
+                <div class="gallery-item" onclick="openModal(6)">Prayer Hall</div>
+                <div class="gallery-item" onclick="openModal(7)">Computer Lab</div>
+                <div class="gallery-item" onclick="openModal(8)">Garden</div>
+            </div>
+        </section>
+
+        <!-- Contact Page -->
+        <section id="contact" class="page-section">
+            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Contact Us</h2>
+            
+            <div class="team-profiles" style="margin-bottom: 2rem;">
+                <div class="profile-card">
+                    <div class="profile-pic">📞</div>
+                    <h3>Admissions Office</h3>
+                    <p>For enrollment inquiries</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">📘</a>
+                        <a href="#" class="social-icon">📺</a>
+                        <a href="#" class="social-icon">📱</a>
+                        <a href="mailto:admissions@academy.com" class="social-icon">✉️</a>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-pic">💬</div>
+                    <h3>Student Support</h3>
+                    <p>For current students</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">📘</a>
+                        <a href="#" class="social-icon">📺</a>
+                        <a href="#" class="social-icon">📱</a>
+                        <a href="mailto:support@academy.com" class="social-icon">✉️</a>
+                    </div>
+                </div>
+            </div>
+
+            <form class="contact-form" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
+                </div>
+<button type="button" class="btn" onclick="sendMessage2()">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+
+    <!-- Gallery Modal -->
+    <div class="modal" id="galleryModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <button class="modal-nav modal-prev" onclick="prevImage()">‹</button>
+            <div class="modal-image" id="modalImage">Gallery Image</div>
+            <button class="modal-nav modal-next" onclick="nextImage()">›</button>
+        </div>
+    </div>
+
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div ><img class="logo" src="teach park.png" alt="AH"></div>
+                    <div style="margin-left: 10px;">
+                        <h3>AR TEACH PARK</h3>
+                        <p>Nithpur, Poraha, Naogaon</p>
+                    </div>
+                </div>
+                <p>Building Strong Foundations through Private Learning,
+Empowering Minds with Computer Training,
+Where Education Meets Technology."</p>
+            </div>
+
+            
+
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+<p>📍 
+    <a href="https://www.google.com/maps?q=6550+Nithpur+Porsha+Naogaon" target="_blank" style="color: #ffffff;">
+        6550 Nithpur, Porsha, Naogaon
+    </a>
+</p>
+                <p><a href="tel:+8801628411467" style="color: inherit; text-decoration: none;">📞 +8801628411467</a></p>
+                <p><a href="mailto:ararafatr162@gmail.com" style="color: inherit; text-decoration: none;">✉️ ararafatr162@gmail.com</a></p>
+                <div class="social-icons" style="justify-content: flex-start; margin-top: 1rem;">
+                    <a href="https://www.facebook.com/arafat2112008rahman" target="_blank"  class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.facebook.com/arafat2112008rahman" target="_blank"  class="social-icon"><i class="fab fa-x-twitter"></i></a>
+                    <a href="tel:+8801628411467" class="social-icon">📞</a>
+                    <a href="mailto:ararafatr162@gmail.com" class="social-icon">✉️</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Send us a Message</h3>
+                <div class="message-box">
+                    <input type="text" class="message-input" placeholder="Your message..." id="footerMessage">
+                    <button class="btn" onclick="sendFooterMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>© 2024-2025 AR TEACH PARK. All Rights Reserved.</p>
+        </div>
+
+
+    </footer>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+     <script>
+
+
+ const contactBtn = document.getElementById("contactBtn");
+  const socialIcons = document.getElementById("socialIcons");
+  const contactText = document.getElementById("contactText");
+
+  // TODO: replace with your deployed Google Apps Script Web App URL
+  // After you deploy the Apps Script (see instructions), paste the URL here.
+  const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxCw2L28KgWb8u3RwhQRdl3k3Fs_nPz-6hqnSCyd0a9H4jdiMmNZjE6hFPst8GVi6JR/exec";
+
+
+
+
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+
+
+              //window location 
+        function goTotutorial(){
+            window.location.href='school login2/messages.html';
+        }
+         function goTologin(){
+            window.location.href='school login2/index.html';
+        }
+        function goToapply(){
+            window.location.href='apply2.html';
+        }
+function goTocollect(){
+    window.location.href='school login2/Collect.html';
+}
+function goToExam(){
+    window.location.href='school file/admit result.html';
+}
+
+
+        // Background Animation
+        function createParticles() {
+            const container = document.getElementById('bgAnimation');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Mobile Menu Functions
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobileMenuOverlay');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            overlay.classList.toggle('active');
+            toggle.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            if (overlay.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function showPageMobile(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update desktop navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Update mobile navigation
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            mobileNavItems.forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Find and activate corresponding desktop nav item
+            const desktopNavItem = Array.from(navItems).find(item => 
+                item.textContent.toLowerCase() === pageId.toLowerCase()
+            );
+            if (desktopNavItem) {
+                desktopNavItem.classList.add('active');
+            }
+            
+            // Close mobile menu
+            toggleMobileMenu();
+        }
+
+        // Profile Toggle
+        function toggleProfile(card) {
+            card.classList.toggle('expanded');
+        }
+
+        // Gallery Modal
+        let currentImageIndex = 0;
+        const galleryImages = [
+            'Campus View 1', 'Library', 'Classroom', 'Event Hall', 
+            'Campus View 2', 'Study Area', 'Prayer Hall', 'Computer Lab', 'Garden'
+        ];
+
+        function openModal(index) {
+            currentImageIndex = index;
+            document.getElementById('modalImage').textContent = galleryImages[index];
+            document.getElementById('galleryModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('galleryModal').classList.remove('active');
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            document.getElementById('modalImage').textContent = galleryImages[currentImageIndex];
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            document.getElementById('modalImage').textContent = galleryImages[currentImageIndex];
+        }
+
+        async function sendMessage2() {
+    // ইনপুট ডেটা নেওয়া
+    const form = document.querySelector('.contact-form');
+    if (!form) return;
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    if (!message) {
+        alert("⚠️ Please write a message before sending!");
+        return;
+    }
+
+    const btn = form.querySelector('button.btn');
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+    }
+
+    const payload = {
+        FullName: name,
+        Email: email,
+        Phone: phone,
+        Message: message
+    };
+
+    // basic validation of the configured URL
+    if (typeof GOOGLE_SHEET_WEBAPP_URL !== 'string' || GOOGLE_SHEET_WEBAPP_URL.indexOf('PASTE_YOUR_WEBAPP_URL_HERE') !== -1) {
+        if (btn) { btn.disabled = false; btn.textContent = 'Send Message'; }
+        alert('⚠️ Google Sheets endpoint not configured. Please deploy the Apps Script and set GOOGLE_SHEET_WEBAPP_URL in the script.');
+        return;
+    }
+
+    try {
+        // Use application/x-www-form-urlencoded to avoid CORS preflight (Apps Script webapps sometimes block OPTIONS)
+        const formBody = new URLSearchParams();
+        formBody.append('FullName', payload.FullName || '');
+        formBody.append('Email', payload.Email || '');
+        formBody.append('Phone', payload.Phone || '');
+        formBody.append('Message', payload.Message || '');
+
+        const response = await fetch(GOOGLE_SHEET_WEBAPP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+            body: formBody.toString(),
+            mode: 'cors'
+        });
+
+        // If the response is not OK, capture helpful details
+        if (!response.ok) {
+            const text = await response.text().catch(() => 'no response body');
+            console.error('Non-OK response from Apps Script:', response.status, text);
+            // Common causes: endpoint not deployed for anonymous access or wrong URL
+            let hint = '';
+            if (response.status === 403 || response.status === 401) {
+                hint = '\nHint: Make sure the Apps Script deployment is set to "Anyone, even anonymous".';
+            } else if (response.status === 404) {
+                hint = '\nHint: Check the Web App URL is correct and you copied the /exec URL.';
+            }
+            throw new Error('Server returned ' + response.status + hint);
+        }
+
+        // try parse JSON but tolerate non-JSON responses
+        let data;
+        try {
+            data = await response.json();
+        } catch (e) {
+            const txt = await response.text().catch(() => '');
+            data = { result: 'success', raw: txt };
+        }
+
+        console.log('Sheet response', data);
+
+        // clear form fields on success
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("message").value = "";
+        document.getElementById("phone").value = "";
+
+        alert('✅ Your message has been sent and recorded. Thank you!');
+    } catch (err) {
+        console.error('Error sending to sheet', err);
+        // show friendlier message but instructive
+        alert('⚠️ There was an error sending your message. Please try again later.\n(See browser console for details)');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Send Message';
+        }
+    }
+}
+
+    // Footer Message Function
+function sendFooterMessage() {
+    const input = document.getElementById('footerMessage');
+    const message = input.value.trim();
+
+    if (message) {
+        // Subject ও Body তৈরি করা
+        const subject = "Footer Message";
+        const body = "Message: " + encodeURIComponent(message);
+
+        // Mailto ওপেন করা
+        window.location.href = "mailto:ararafatr162@gmail.com?subject=" + subject + "&body=" + body;
+
+        // ইনপুট রিসেট করা
+        input.value = '';
+
+        // Success Message দেখানো
+        setTimeout(() => {
+            alert("✅ Your message has been processed successfully!");
+        }, 500); // অল্প delay রাখা হলো
+    } else {
+        alert("⚠️ Please write a message before sending!");
+    }
+}
+
+
+        // Close modal when clicking outside
+        document.getElementById('galleryModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+        });
+
+        // Keyboard navigation for modal
+        document.addEventListener('keydown', function(event) {
+            const modal = document.getElementById('galleryModal');
+            if (modal.classList.contains('active')) {
+                if (event.key === 'Escape') {
+                    closeModal();
+                } else if (event.key === 'ArrowLeft') {
+                    prevImage();
+                } else if (event.key === 'ArrowRight') {
+                    nextImage();
+                }
+            }
+        });
+
+
+
+
+
+
+
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97ae7a325356851f',t:'MTc1NzE2NzA2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

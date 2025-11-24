@@ -1,0 +1,3069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        // Ensure DATA namespace exists so class-*.js can attach their data safely
+        window.DATA = window.DATA || {};
+        window.DATA.classes = window.DATA.classes || {};
+    </script>
+    <script src="school login2/data/class-1.js"></script>
+    <script src="school login2/data/class-2.js"></script>
+    <script src="school login2/data/class-3.js"></script>
+    <script src="school login2/data/class-4.js"></script>
+    <script src="school login2/data/class-5.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আবেদন ফরম Teach Park</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 20px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 10px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .serial-number {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: #08e94b;
+            margin-bottom: 32px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+            letter-spacing: 0.5px;
+            
+        }
+         .profile-image{
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            padding: 30px;
+            left: 0px;
+            right: 5px;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+            position: relative;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #00d4ff, #0099cc);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #e1e8ed;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            will-change: transform, box-shadow, border-color;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 
+                0 0 0 3px rgba(0, 212, 255, 0.15),
+                0 8px 25px rgba(0, 212, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Custom Dropdown Styles */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-input {
+            width: 100%;
+            padding: 16px 50px 16px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            will-change: transform, box-shadow, border-color;
+        }
+
+        .dropdown-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 
+                0 0 0 3px rgba(0, 212, 255, 0.15),
+                0 8px 25px rgba(0, 212, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .dropdown-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        .dropdown-arrow svg {
+            width: 100%;
+            height: 100%;
+            fill: #00d4ff;
+        }
+
+        .dropdown-input.active + .dropdown-arrow {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .dropdown-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.98), rgba(22, 33, 62, 0.95));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            max-height: 250px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            margin-top: 4px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 212, 255, 0.5) transparent;
+        }
+
+        .dropdown-options::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dropdown-options::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .dropdown-options::-webkit-scrollbar-thumb {
+            background: rgba(0, 212, 255, 0.5);
+            border-radius: 3px;
+        }
+
+        .dropdown-options::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 212, 255, 0.7);
+        }
+
+        .dropdown-options.show {
+            display: block;
+            animation: dropdownSlide 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes dropdownSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-8px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .dropdown-search {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 14px;
+            width: 100%;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .dropdown-search:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .dropdown-search::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .dropdown-option {
+            padding: 14px 18px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            will-change: background-color, color;
+        }
+
+        .dropdown-option:hover {
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
+            color: #00d4ff;
+        }
+
+        .dropdown-option:last-child {
+            border-bottom: none;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .dropdown-option.selected {
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.25), rgba(0, 212, 255, 0.1));
+            color: #00d4ff;
+        }
+
+        .dropdown-option .check-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .dropdown-option.selected .check-icon {
+            opacity: 1;
+        }
+
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .role-option {
+            padding: 20px 16px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-weight: 600;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+            will-change: transform, box-shadow, background, border-color;
+        }
+
+        .role-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .role-option:hover {
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 212, 255, 0.15);
+        }
+
+        .role-option:hover::before {
+            left: 100%;
+        }
+
+        .role-option.active {
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.25), rgba(0, 212, 255, 0.1));
+            border-color: #00d4ff;
+            color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .sub-form {
+            display: none;
+            animation: slideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            padding: 32px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 24px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .sub-form.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 14px 20px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .checkbox-item:hover {
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .checkbox-item input[type="radio"], .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            accent-color: #00d4ff;
+        }
+
+        .photo-upload {
+            position: relative;
+            border: 2px dashed rgba(0, 212, 255, 0.4);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.05), rgba(0, 212, 255, 0.02));
+            backdrop-filter: blur(10px);
+        }
+
+        .photo-upload:hover {
+            border-color: #00d4ff;
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.1), rgba(0, 212, 255, 0.05));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.15);
+        }
+
+        .photo-upload input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .photo-upload div {
+            font-size: 16px;
+            font-weight: 600;
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 40px;
+            display: none;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.3);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+            background: linear-gradient(135deg, #00e6ff 0%, #00b3d9 100%);
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .pdf-preview {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .pdf-content {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            padding: 40px;
+            max-height: 85vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 212, 255, 0.5) transparent;
+        }
+
+        .pdf-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .pdf-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .pdf-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 212, 255, 0.5);
+            border-radius: 4px;
+        }
+
+        .pdf-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 212, 255, 0.7);
+        }
+
+        .pdf-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .pdf-btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 15px;
+            min-width: 120px;
+        }
+
+        .pdf-btn.edit {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+        }
+
+        .pdf-btn.print {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: white;
+        }
+
+        .pdf-btn.close {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+        }
+
+        .pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .same-address-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .same-address-option:hover {
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .same-address-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #00d4ff;
+        }
+
+        .same-address-option label {
+            margin: 0;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .address-fields {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .address-fields.hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                padding: 16px;
+                margin: 5px;
+                border-radius: 20px;
+            }
+
+            .serial-number {
+                font-size: 18px;
+                padding: 16px;
+                margin-bottom: 24px;
+            }
+
+            .section-title {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .role-selector {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .role-option {
+                padding: 16px 12px;
+                font-size: 14px;
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .checkbox-item {
+                justify-content: flex-start;
+                min-width: auto;
+                padding: 12px 16px;
+            }
+
+            .sub-form {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            input, textarea, .dropdown-input {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+
+            .dropdown-input {
+                padding-right: 46px;
+            }
+
+            .submit-btn {
+                padding: 18px;
+                font-size: 16px;
+                margin-top: 32px;
+            }
+
+            .pdf-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .pdf-btn {
+                padding: 14px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+                margin: 2px;
+            }
+
+            .serial-number {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .action-btn {
+                padding: 12px 20px;
+                font-size: 13px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .role-option {
+                padding: 14px 10px;
+                font-size: 13px;
+            }
+
+            .sub-form {
+                padding: 16px;
+            }
+
+            input, textarea, .dropdown-input {
+                padding: 12px 14px;
+            }
+
+            .dropdown-input {
+                padding-right: 44px;
+            }
+
+            .submit-btn {
+                padding: 16px;
+                font-size: 15px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                margin: 10px;
+                max-height: 90vh;
+            }
+
+            .modal-title {
+                font-size: 20px;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .modal-btn {
+                width: 100%;
+            }
+        }
+
+        /* Error Animation */
+        @keyframes errorSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Error message styles */
+        .field-error-message {
+            animation: errorSlide 0.3s ease-out;
+        }
+
+        .section-error-message {
+            animation: errorSlide 0.3s ease-out;
+        }
+
+        .global-error-message {
+            animation: errorSlide 0.3s ease-out;
+        }
+
+        /* Action buttons styles */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
+            border: 1.5px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            flex: 1;
+            justify-content: center;
+            letter-spacing: 0.3px;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.25), rgba(0, 212, 255, 0.1));
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+        }
+
+        .btn-icon {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.98), rgba(22, 33, 62, 0.95));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.3s ease-out;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 212, 255, 0.5) transparent;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 212, 255, 0.5);
+            border-radius: 3px;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .modal-title {
+            color: #00d4ff;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #00d4ff;
+        }
+
+        .modal-body {
+            color: #e1e8ed;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-body h3 {
+            color: #4fc3f7;
+            margin: 20px 0 12px 0;
+            font-size: 18px;
+        }
+
+        .modal-body ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+
+        .modal-body .highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+            min-width: 120px;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: white;
+        }
+
+        .modal-btn.secondary {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            color: #e1e8ed;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-btn.primary:hover {
+            background: linear-gradient(135deg, #00e6ff, #00b3d9);
+        }
+
+        .modal-btn.secondary:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+        }
+    </style>
+</head>
+<body>
+    <br>
+        <div class="serial-number" style="font-size:xx-large;color: rgb(58, 247, 51); display:flex; align-items:center; gap:12px;"> 
+            <img src="./teach%20park.png" alt="AR Teach Park" style="height:56px; width:auto; display:block; object-fit:contain; " />
+            <div> 
+                <div style="font-size:inherit; font-weight:700;">&nbsp;AR &nbsp; Teach &nbsp; Park</div>
+                <p style="font-size: medium; color: #08e94b; margin:0;">Nithpur, Porsha</p>
+            </div>
+        </div>
+
+        <div class="serial-number" id="serialNumber">
+            Serial No. : 2024001001
+        </div>
+
+        <div class="action-buttons">
+            <button type="button" class="action-btn rules-btn" onclick="showRulesModal()">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                </svg>
+                ফরম পূরণ এর নিয়ম
+            </button>
+            <button type="button" class="action-btn login-btn" onclick="goTologin()">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z"/>
+                </svg>
+                লগইন 
+            </button>
+        </div>
+
+        <form id="applicationForm">
+            <!-- hidden serial field sent to Google Sheets -->
+            <input type="hidden" id="serialInput" name="serial" value="">
+            <!-- Basic Information -->
+            <div class="form-section">
+                <h2 class="section-title">সাধারণ তথ্য </h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">নাম *</label>
+                        <input type="text" id="name" name="name" placeholder="নাম লিখুন" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">ফোন নম্বর *</label>
+                        <input type="tel" id="mobile" name="mobile" pattern="[0-9]{11}" placeholder="ফোন নম্বর দিন" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">ইমেইল (ঐছিক) *</label>
+                        <input type="email" id="email" name="email" placeholder="আপনার ইমেইল দিন ">
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">জন্ম তারিখ *</label>
+                        <input type="date" id="dob" name="dob" placeholder="আপনার জন্ম তারিখ দিন" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="village">গ্রাম *</label>
+                        <div class="custom-dropdown">
+                            <input type="text" class="dropdown-input" id="village" name="village" placeholder="আপনার গ্রাম এর নাম নিবার্চন করুন..." required readonly>
+                            <div class="dropdown-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-options">
+                                <input type="text" class="dropdown-search" placeholder="Search villages...">
+                                <div class="dropdown-option" data-value="Rampur">
+                                    <span>গোপিনাথপুর</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Karimpur">
+                                    <span>নিতপুর</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Shahpur">
+                                    <span>Shahpur</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Mirpur">
+                                    <span>Mirpur</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Dhanmondi">
+                                    <span>Dhanmondi</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="union">Union *</label>
+                        <div class="custom-dropdown">
+                            <input type="text" class="dropdown-input" id="union" name="union" placeholder="Select or type union name..." required readonly>
+                            <div class="dropdown-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-options">
+                                <input type="text" class="dropdown-search" placeholder="Search unions...">
+                                <div class="dropdown-option" data-value="Rampur Union">
+                                    <span>Rampur Union</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Karimpur Union">
+                                    <span>Karimpur Union</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Shahpur Union">
+                                    <span>Shahpur Union</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="upazila">Upazila *</label>
+                        <div class="custom-dropdown">
+                            <input type="text" class="dropdown-input" id="upazila" name="upazila" placeholder="Select or type upazila name..." required readonly>
+                            <div class="dropdown-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-options">
+                                <input type="text" class="dropdown-search" placeholder="Search upazilas...">
+                                <div class="dropdown-option" data-value="Sadar">
+                                    <span>Sadar</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Dhamrai">
+                                    <span>Dhamrai</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Keraniganj">
+                                    <span>Keraniganj</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Savar">
+                                    <span>Savar</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="district">District *</label>
+                        <div class="custom-dropdown">
+                            <input type="text" class="dropdown-input" id="district" name="district" placeholder="Select or type district name..." required readonly>
+                            <div class="dropdown-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-options">
+                                <input type="text" class="dropdown-search" placeholder="Search districts...">
+                                <div class="dropdown-option" data-value="Dhaka">
+                                    <span>Dhaka</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Gazipur">
+                                    <span>Gazipur</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Narayanganj">
+                                    <span>Narayanganj</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Manikganj">
+                                    <span>Manikganj</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="occupation">Occupation *</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="dropdown-input" id="occupation" name="occupation" placeholder="Select or type occupation..." required readonly>
+                        <div class="dropdown-arrow">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
+                        <div class="dropdown-options">
+                            <input type="text" class="dropdown-search" placeholder="Search occupations...">
+                            <div class="dropdown-option" data-value="Student">
+                                <span>Student</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Teacher">
+                                <span>Teacher</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Business">
+                                <span>Business</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Service">
+                                <span>Service</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Farmer">
+                                <span>Farmer</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Doctor">
+                                <span>Doctor</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Engineer">
+                                <span>Engineer</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Other">
+                                <span>Other</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role Selection -->
+            <div class="form-section">
+                <h2 class="section-title">Select Your Role</h2>
+                <div class="role-selector">
+                    <div class="role-option" data-role="student">Student</div>
+                    <div class="role-option" data-role="teacher">Teacher</div>
+                    <div class="role-option" data-role="parent">Parent</div>
+                    <div class="role-option" data-role="guest">Guest</div>
+                </div>
+            </div>
+
+            <!-- Student Sub-Form -->
+            <div class="sub-form" id="studentForm">
+                <h3 class="section-title">Student Information</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="schoolName">School Name *</label>
+                        <div class="custom-dropdown">
+                            <input type="text" class="dropdown-input" id="schoolName" name="schoolName" placeholder="Select or type school name..." readonly>
+                            <div class="dropdown-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-options">
+                                <input type="text" class="dropdown-search" placeholder="Search schools...">
+                                <div class="dropdown-option" data-value="Dhaka High School">
+                                    <span>Dhaka High School</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Model School">
+                                    <span>Model School</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Government School">
+                                    <span>Government School</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Private Academy">
+                                    <span>Private Academy</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="class">Class *</label>
+                        <div class="custom-dropdown">
+                            <input type="text" class="dropdown-input" id="class" name="class" placeholder="Select class..." readonly>
+                            <div class="dropdown-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-options">
+                                <div class="dropdown-option" data-value="1">
+                                    <span>Class 1</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="2">
+                                    <span>Class 2</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="3">
+                                    <span>Class 3</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="4">
+                                    <span>Class 4</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="5">
+                                    <span>Class 5</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="roll">Roll Number *</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="dropdown-input" id="roll" name="roll" placeholder="Select roll number..." readonly>
+                        <div class="dropdown-arrow">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
+                        <div class="dropdown-options">
+                            <input type="text" class="dropdown-search" placeholder="Search roll numbers...">
+                            <!-- Roll numbers will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="color: #4fc3f7; margin: 20px 0 15px 0;">School Address</h4>
+                <div class="same-address-option">
+                    <input type="checkbox" id="sameAddress" name="sameAddress">
+                    <label for="sameAddress">Same as home address</label>
+                </div>
+
+                <div class="address-fields" id="schoolAddressFields">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="schoolVillage">School Village</label>
+                            <div class="custom-dropdown">
+                                <input type="text" class="dropdown-input" id="schoolVillage" name="schoolVillage" placeholder="Select school village..." readonly>
+                                <div class="dropdown-arrow">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10l5 5 5-5z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-options">
+                                    <input type="text" class="dropdown-search" placeholder="Search villages...">
+                                    <div class="dropdown-option" data-value="Rampur">
+                                        <span>Rampur</span>
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-option" data-value="Karimpur">
+                                        <span>Karimpur</span>
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="schoolUnion">School Union</label>
+                            <div class="custom-dropdown">
+                                <input type="text" class="dropdown-input" id="schoolUnion" name="schoolUnion" placeholder="Select school union..." readonly>
+                                <div class="dropdown-arrow">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10l5 5 5-5z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-options">
+                                    <input type="text" class="dropdown-search" placeholder="Search unions...">
+                                    <div class="dropdown-option" data-value="Rampur Union">
+                                        <span>Rampur Union</span>
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-option" data-value="Karimpur Union">
+                                        <span>Karimpur Union</span>
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="schoolUpazila">School Upazila</label>
+                            <div class="custom-dropdown">
+                                <input type="text" class="dropdown-input" id="schoolUpazila" name="schoolUpazila" placeholder="Select school upazila..." readonly>
+                                <div class="dropdown-arrow">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10l5 5 5-5z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-options">
+                                    <input type="text" class="dropdown-search" placeholder="Search upazilas...">
+                                    <div class="dropdown-option" data-value="Sadar">
+                                        <span>Sadar</span>
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-option" data-value="Dhamrai">
+                                        <span>Dhamrai</span>
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="schoolDistrict">School District</label>
+                            <div class="custom-dropdown">
+                                <input type="text" class="dropdown-input" id="schoolDistrict" name="schoolDistrict" placeholder="Select school district..." readonly>
+                                <div class="dropdown-arrow">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10l5 5 5-5z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-options">
+                                    <input type="text" class="dropdown-search" placeholder="Search districts...">
+                                    <div class="dropdown-option" data-value="Dhaka">
+                                        <span>Dhaka</span>
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="dropdown-option" data-value="Gazipur">
+                                        <span>Gazipur</span>
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="color: #4fc3f7; margin: 20px 0 15px 0;">Guardian Information</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="guardianRelation">Relationship *</label>
+                        <div class="custom-dropdown">
+                            <input type="text" class="dropdown-input" id="guardianRelation" name="guardianRelation" placeholder="Select relationship..." readonly>
+                            <div class="dropdown-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-options">
+                                <div class="dropdown-option" data-value="Father">
+                                    <span>Father</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Mother">
+                                    <span>Mother</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Uncle">
+                                    <span>Uncle</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Aunt">
+                                    <span>Aunt</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Brother">
+                                    <span>Brother</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Sister">
+                                    <span>Sister</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="guardianOccupation">Guardian Occupation *</label>
+                        <div class="custom-dropdown">
+                            <input type="text" class="dropdown-input" id="guardianOccupation" name="guardianOccupation" placeholder="Select guardian occupation..." readonly>
+                            <div class="dropdown-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-options">
+                                <input type="text" class="dropdown-search" placeholder="Search occupations...">
+                                <div class="dropdown-option" data-value="Business">
+                                    <span>Business</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Service">
+                                    <span>Service</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Teacher">
+                                    <span>Teacher</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Farmer">
+                                    <span>Farmer</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Other">
+                                    <span>Other</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="guardianPhone">Guardian Phone *</label>
+                    <input type="tel" id="guardianPhone" name="guardianPhone" pattern="[0-9]{11}">
+                </div>
+
+                <h4 style="color: #4fc3f7; margin: 20px 0 15px 0;">Computer Knowledge</h4>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="radio" id="interested" name="computerKnowledge" value="Interested">
+                        <label for="interested">Interested</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="radio" id="notInterested" name="computerKnowledge" value="Not Interested">
+                        <label for="notInterested">Not Interested</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="radio" id="alreadyKnow" name="computerKnowledge" value="Already Know">
+                        <label for="alreadyKnow">Already Know</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parent Sub-Form -->
+            <div class="sub-form" id="parentForm">
+                <h3 class="section-title">Parent Information</h3>
+                
+                <div class="checkbox-group" style="margin-bottom: 20px;">
+                    <div class="checkbox-item">
+                        <input type="radio" id="alreadyApplied" name="parentStatus" value="Already Applied">
+                        <label for="alreadyApplied">Already Applied</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="radio" id="notApplied" name="parentStatus" value="Not Applied">
+                        <label for="notApplied">Not Applied</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="radio" id="sonIsStudent" name="parentStatus" value="My Son is Student">
+                        <label for="sonIsStudent">My Son is Student</label>
+                    </div>
+                </div>
+
+                <div id="applicationSerialDiv" style="display: none;">
+                    <div class="form-group">
+                        <label for="applicationSerial">Application Serial Number</label>
+                        <input type="text" id="applicationSerial" name="applicationSerial">
+                    </div>
+                </div>
+
+                <div id="sonInfoDiv" style="display: none;">
+                    <!-- ID Search box: user only types ID here; other fields are readonly -->
+                    <div class="form-group" style="position: relative;">
+                        <label for="sonSearchId">Search by Student ID</label>
+                        <input type="text" id="sonSearchId" name="sonSearchId" placeholder="Enter student ID (e.g. S1001)" autocomplete="off">
+                        <div id="sonSearchStatus" style="position: absolute; top: 100%; left: 0; right: 0; padding: 8px 12px; color: #e1e8ed; background: rgba(0,0,0,0.45); font-size: 13px; display: none; z-index: 1000; border-radius: 6px;">
+                            <!-- Live status: searching / not found / found -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sonId">Student ID</label>
+                        <input type="text" id="sonId" name="sonId" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sonName">Student Name</label>
+                        <input type="text" id="sonName" name="sonName" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sonClass">Student Class</label>
+                        <input type="text" id="sonClass" name="sonClass" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sonRoll">Student Roll</label>
+                        <input type="text" id="sonRoll" name="sonRoll" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teacher Sub-Form -->
+            <div class="sub-form" id="teacherForm">
+                <h3 class="section-title">Teacher Information</h3>
+                
+                <div class="form-group">
+                    <label for="currentOccupation">Current Occupation *</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="dropdown-input" id="currentOccupation" name="currentOccupation" placeholder="Select current occupation..." readonly>
+                        <div class="dropdown-arrow">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
+                        <div class="dropdown-options">
+                            <div class="dropdown-option" data-value="Teacher">
+                                <span>Teacher</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Student">
+                                <span>Student</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="teachingSubject">Teaching Subject *</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="dropdown-input" id="teachingSubject" name="teachingSubject" placeholder="Select teaching subject..." readonly>
+                        <div class="dropdown-arrow">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </div>
+                        <div class="dropdown-options">
+                            <input type="text" class="dropdown-search" placeholder="Search subjects...">
+                            <div class="dropdown-option" data-value="Mathematics">
+                                <span>Mathematics</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="English">
+                                <span>English</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Science">
+                                <span>Science</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Social Studies">
+                                <span>Social Studies</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Computer Science">
+                                <span>Computer Science</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Physics">
+                                <span>Physics</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Chemistry">
+                                <span>Chemistry</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-option" data-value="Biology">
+                                <span>Biology</span>
+                                <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="teacherSchoolInfo">
+                    <div class="form-group">
+                        <label for="teacherSchoolName">School Name *</label>
+                        <input type="text" id="teacherSchoolName" name="teacherSchoolName">
+                    </div>
+                    <div class="form-group" id="designationDiv" style="display: none;">
+                        <label for="designation">Designation *</label>
+                        <div class="custom-dropdown">
+                            <input type="text" class="dropdown-input" id="designation" name="designation" placeholder="Select designation..." readonly>
+                            <div class="dropdown-arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </div>
+                            <div class="dropdown-options">
+                                <div class="dropdown-option" data-value="Head Teacher">
+                                    <span>Head Teacher</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Assistant Teacher">
+                                    <span>Assistant Teacher</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="dropdown-option" data-value="Subject Teacher">
+                                    <span>Subject Teacher</span>
+                                    <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Photo</label>
+                    <div class="photo-upload">
+                        <input type="file" id="teacherPhoto" name="teacherPhoto" accept="image/*">
+                        <div>📷 Click to upload photo</div>
+                        <small style="color: #b0bec5;">Only image files allowed</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guest Sub-Form -->
+            <div class="sub-form" id="guestForm">
+                <h3 class="section-title">Guest Information</h3>
+                
+                <div class="form-group">
+                    <label for="visitPurpose">Purpose of Visit *</label>
+                    <textarea id="visitPurpose" name="visitPurpose" rows="4" placeholder="Please describe your purpose of visit..."></textarea>
+                    <div class="input-guidance" data-for="visitPurpose">
+                        <span class="guidance-icon">📝</span>
+                        Briefly explain why you are visiting and what you hope to accomplish
+                    </div>
+                </div>
+            </div>
+
+            <!-- Required Agreements -->
+            <div class="form-section" style="margin-top: 40px;">
+                <h2 class="section-title">Agreement & Declaration</h2>
+                
+                <div class="checkbox-group" style="flex-direction: column; gap: 20px; margin-bottom: 32px;">
+                    <div class="checkbox-item" style="justify-content: flex-start; min-width: auto; padding: 16px 20px;">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required style="width: 18px; height: 18px; margin-right: 12px; accent-color: #00d4ff;">
+                        <label for="agreeTerms" style="margin: 0; font-weight: 500; cursor: pointer; color: #e1e8ed;">I agree to the terms and conditions and confirm that all information provided is accurate and complete.</label>
+                    </div>
+                    <div class="checkbox-item" style="justify-content: flex-start; min-width: auto; padding: 16px 20px;">
+                        <input type="checkbox" id="confirmSubmission" name="confirmSubmission" required style="width: 18px; height: 18px; margin-right: 12px; accent-color: #00d4ff;">
+                        <label for="confirmSubmission" style="margin: 0; font-weight: 500; cursor: pointer; color: #e1e8ed;">I understand that submitting false information may result in rejection of my application.</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" style="display: block;">Submit Application</button>
+        </form>
+    </div>
+
+    <!-- Rules Modal -->
+    <div class="modal-overlay" id="rulesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Form Filling Rules & Guidelines</h2>
+                <button class="modal-close" onclick="closeRulesModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>📋 General Instructions</h3>
+                <ul>
+                    <li>Fill out all <span class="highlight">required fields</span> marked with an asterisk (*)</li>
+                    <li>Ensure all information provided is <span class="highlight">accurate and complete</span></li>
+                    <li>Use proper spelling and formatting for names and addresses</li>
+                    <li>Double-check your mobile number as it will be used for communication</li>
+                </ul>
+
+                <h3>👤 Role-Specific Requirements</h3>
+                <ul>
+                    <li><span class="highlight">Students:</span> Must provide guardian information and school details</li>
+                    <li><span class="highlight">Teachers:</span> Must specify current occupation and teaching subject</li>
+                    <li><span class="highlight">Parents:</span> Must indicate application status and provide relevant details</li>
+                    <li><span class="highlight">Guests:</span> Must clearly describe the purpose of visit</li>
+                </ul>
+
+                <h3>📝 Important Notes</h3>
+                <ul>
+                    <li>Mobile numbers must be <span class="highlight">11 digits</span> long</li>
+                    <li>Email address is optional but recommended for better communication</li>
+                    <li>School address can be marked as "same as home address" if applicable</li>
+                    <li>All dropdown selections must be made from the provided options</li>
+                </ul>
+
+                <h3>✅ Before Submitting</h3>
+                <ul>
+                    <li>Review all entered information for accuracy</li>
+                    <li>Ensure both agreement checkboxes are selected</li>
+                    <li>Verify that your selected role matches your actual status</li>
+                    <li>Keep your serial number for future reference</li>
+                </ul>
+
+                <h3>⚠️ Data Privacy</h3>
+                <ul>
+                    <li>Your personal information will be kept confidential</li>
+                    <li>Data will only be used for the intended application purpose</li>
+                    <li>You can request data correction or deletion if needed</li>
+                </ul>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeRulesModal()">Close</button>
+                <button class="modal-btn primary" onclick="closeRulesModal()">I Understand</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- PDF Preview Modal -->
+    <div class="pdf-preview" id="pdfPreview">
+        <div class="pdf-content" id="pdfContent">
+            <!-- PDF content will be generated here -->
+        </div>
+        <div class="pdf-buttons">
+            <button class="pdf-btn print" onclick="printPDF()">Print</button>
+            <button class="pdf-btn edit" onclick="editForm()"></button>
+            <button class="pdf-btn close" onclick="closePDF()"></button>
+        </div>
+    </div>
+    
+<script>
+// Google Sheets submission URL (deployed Web App URL)
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyvc5sm86gsAjIPv_NCGn3OjQP_SffQtFIIZc_R2pq71AxwpFCTMLDpA3BfG3UgoXtv/exec";
+
+// Helper: serialize form data to object
+function getFormData(form) {
+    const formData = new FormData(form);
+    const data = {};
+    for (const [key, value] of formData.entries()) {
+        data[key] = value;
+    }
+    return data;
+}
+
+// Legacy auto-submit removed to avoid duplicate submissions.
+// Submission is handled by the main validated submit handler below.
+        //Go To File
+        function goTologin(){
+            window.location.href='Exam.html';
+        }
+    
+        // Generate serial number
+        function generateSerial() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const random = Math.floor(Math.random() * 900000) + 100000;
+            return `${year}${random}`;
+        }
+
+        // Custom dropdown functionality
+        function initializeDropdowns() {
+            const dropdowns = document.querySelectorAll('.custom-dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                const input = dropdown.querySelector('.dropdown-input');
+                const options = dropdown.querySelector('.dropdown-options');
+                const searchInput = options.querySelector('.dropdown-search');
+                const optionElements = options.querySelectorAll('.dropdown-option');
+                
+                // Toggle dropdown
+                input.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeAllDropdowns();
+                    options.classList.add('show');
+                    input.classList.add('active');
+                    if (searchInput) {
+                        searchInput.focus();
+                    }
+                });
+
+                // Handle option selection
+                optionElements.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const value = this.dataset.value;
+                        const text = this.querySelector('span').textContent;
+                        
+                        input.value = text;
+                        input.dataset.value = value;
+                        
+                        // Update selected state
+                        optionElements.forEach(opt => opt.classList.remove('selected'));
+                        this.classList.add('selected');
+                        
+                        options.classList.remove('show');
+                        input.classList.remove('active');
+                        
+                        // Trigger change event
+                        input.dispatchEvent(new Event('change'));
+                    });
+                });
+
+                // Search functionality
+                if (searchInput) {
+                    searchInput.addEventListener('input', function() {
+                        const query = this.value.toLowerCase();
+                        let hasResults = false;
+                        
+                        optionElements.forEach(option => {
+                            const text = option.querySelector('span').textContent.toLowerCase();
+                            if (text.includes(query)) {
+                                option.style.display = 'flex';
+                                hasResults = true;
+                            } else {
+                                option.style.display = 'none';
+                            }
+                        });
+                        
+                        // Show/hide no results message
+                        let noResultsMsg = options.querySelector('.no-results');
+                        if (!hasResults && query.length > 0) {
+                            if (!noResultsMsg) {
+                                noResultsMsg = document.createElement('div');
+                                noResultsMsg.className = 'no-results';
+                                noResultsMsg.textContent = 'No results found';
+                                options.appendChild(noResultsMsg);
+                            }
+                            noResultsMsg.style.display = 'block';
+                        } else if (noResultsMsg) {
+                            noResultsMsg.style.display = 'none';
+                        }
+                    });
+
+                    searchInput.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                    });
+                }
+            });
+        }
+
+        function closeAllDropdowns() {
+            document.querySelectorAll('.dropdown-options.show').forEach(options => {
+                options.classList.remove('show');
+            });
+            document.querySelectorAll('.dropdown-input.active').forEach(input => {
+                input.classList.remove('active');
+            });
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            closeAllDropdowns();
+        });
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('serialNumber').textContent = `Serial: ${generateSerial()}`;
+            
+            // Initialize custom dropdowns
+            initializeDropdowns();
+            
+            // Role selection
+            document.querySelectorAll('.role-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('active'));
+                    document.querySelectorAll('.sub-form').forEach(form => form.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Show corresponding sub-form
+                    const role = this.dataset.role;
+                    document.getElementById(`${role}Form`).classList.add('active');
+                });
+            });
+
+            // Add event listeners to all form inputs
+            const allInputs = document.querySelectorAll('input, textarea, .dropdown-input');
+            allInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    // Reset border color when user starts typing
+                    this.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                });
+
+                // Show guidance on focus
+                input.addEventListener('focus', function() {
+                    showInputGuidance(this);
+                });
+
+                // Hide guidance on blur (with delay to allow reading)
+                input.addEventListener('blur', function() {
+                    setTimeout(() => {
+                        hideInputGuidance(this);
+                    }, 200);
+                });
+            });
+
+            // Same address checkbox
+            document.getElementById('sameAddress').addEventListener('change', function() {
+                const addressFields = document.getElementById('schoolAddressFields');
+                if (this.checked) {
+                    addressFields.classList.add('hidden');
+                } else {
+                    addressFields.classList.remove('hidden');
+                }
+            });
+
+            // Parent status handling
+            document.querySelectorAll('input[name="parentStatus"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const serialDiv = document.getElementById('applicationSerialDiv');
+                    const sonInfoDiv = document.getElementById('sonInfoDiv');
+                    
+                    if (this.value === 'Already Applied') {
+                        serialDiv.style.display = 'block';
+                        sonInfoDiv.style.display = 'none';
+                    } else if (this.value === 'Not Applied') {
+                        alert('Apply for your son first');
+                        clearForm();
+                        return;
+                    } else if (this.value === 'My Son is Student') {
+                        serialDiv.style.display = 'none';
+                        sonInfoDiv.style.display = 'block';
+                    }
+                });
+            });
+
+            // Teacher occupation handling
+            document.getElementById('currentOccupation').addEventListener('change', function() {
+                const designationDiv = document.getElementById('designationDiv');
+                if (this.dataset.value === 'Teacher') {
+                    designationDiv.style.display = 'block';
+                } else {
+                    designationDiv.style.display = 'none';
+                }
+            });
+
+            // Son name auto-suggestion
+            const sonNameInput = document.getElementById('sonName');
+            const suggestionsDiv = document.getElementById('sonNameSuggestions');
+
+            sonNameInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                if (query.length === 0) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
+
+                const allStudents = Object.values(studentData).flat();
+                const matches = allStudents.filter(student => 
+                    student.name.toLowerCase().startsWith(query)
+                );
+
+                if (matches.length > 0) {
+                    suggestionsDiv.innerHTML = matches.map(student => 
+                        `<div class="dropdown-option" data-id="${student.id}" data-class="${student.class}">
+                            <span>${student.name}</span>
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                        </div>`
+                    ).join('');
+                    suggestionsDiv.style.display = 'block';
+                    
+                    // Add click handlers to suggestions
+                    suggestionsDiv.querySelectorAll('.dropdown-option').forEach(option => {
+                        option.addEventListener('click', function() {
+                            sonNameInput.value = this.querySelector('span').textContent;
+                            document.getElementById('sonId').value = this.dataset.id;
+                            document.getElementById('sonClass').value = `Class ${this.dataset.class}`;
+                            suggestionsDiv.style.display = 'none';
+                        });
+                    });
+                } else {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!sonNameInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
+
+            // Generate roll numbers based on class selection
+            document.getElementById('class').addEventListener('change', function() {
+                const rollDropdown = document.querySelector('#roll').closest('.custom-dropdown');
+                const rollOptions = rollDropdown.querySelector('.dropdown-options');
+                const rollInput = rollDropdown.querySelector('.dropdown-input');
+                
+                // Clear existing options except search input
+                const searchInput = rollOptions.querySelector('.dropdown-search');
+                rollOptions.innerHTML = '';
+                if (searchInput) {
+                    rollOptions.appendChild(searchInput);
+                }
+                
+                if (this.dataset.value) {
+                    for (let i = 1; i <= 50; i++) {
+                        const option = document.createElement('div');
+                        option.className = 'dropdown-option';
+                        option.dataset.value = i;
+                        option.innerHTML = `
+                            <span>${i}</span>
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="#00d4ff">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                        `;
+                        
+                        option.addEventListener('click', function() {
+                            rollInput.value = this.querySelector('span').textContent;
+                            rollInput.dataset.value = this.dataset.value;
+                            rollOptions.classList.remove('show');
+                            rollInput.classList.remove('active');
+                        });
+                        
+                        rollOptions.appendChild(option);
+                    }
+                }
+                
+                // Clear roll selection
+                rollInput.value = '';
+                rollInput.dataset.value = '';
+            });
+
+            // Photo upload preview
+            document.getElementById('teacherPhoto').addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.createElement('img');
+                        preview.src = e.target.result;
+                        preview.style.maxWidth = '200px';
+                        preview.style.maxHeight = '200px';
+                        preview.style.marginTop = '10px';
+                        preview.style.borderRadius = '8px';
+                        
+                        const uploadDiv = document.querySelector('.photo-upload');
+                        const existingPreview = uploadDiv.querySelector('img');
+                        if (existingPreview) {
+                            existingPreview.remove();
+                        }
+                        uploadDiv.appendChild(preview);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (validateForm()) {
+                const formData = collectFormData();
+                showAlert(formData);
+                generatePDF(formData);
+
+                // Send to Google Sheets Web App (fire-and-forget)
+                try {
+                    // Ensure serial is included
+                    if (!formData.serial && document.getElementById('serialInput')) {
+                        formData.serial = document.getElementById('serialInput').value || '';
+                    }
+
+                    fetch(GOOGLE_SHEET_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams(formData).toString()
+                    }).then(() => {
+                        // With no-cors mode we can't read response; assume success
+                        console.log('Submitted to Google Sheet (fire-and-forget)');
+                    }).catch(err => {
+                        console.error('Google Sheet submission error:', err);
+                    });
+                } catch (err) {
+                    console.error('Submission failed:', err);
+                }
+            }
+        });
+
+        /* Son ID live search and autofill functionality */
+        (function setupSonIdSearch(){
+            function init() {
+                const searchInput = document.getElementById('sonSearchId');
+                const statusDiv = document.getElementById('sonSearchStatus');
+                const idField = document.getElementById('sonId');
+                const nameField = document.getElementById('sonName');
+                const classField = document.getElementById('sonClass');
+                const rollField = document.getElementById('sonRoll');
+
+                if (!searchInput) return;
+
+                // Ensure only ID input is editable; others stay readonly (already set in HTML)
+
+                let timer = null;
+                let lastValue = '';
+
+                function setStatus(message, visible=true, isError=false){
+                    statusDiv.textContent = message;
+                    statusDiv.style.display = visible ? 'block' : 'none';
+                    statusDiv.style.color = isError ? '#ffb3b3' : '#e1e8ed';
+                }
+
+                function clearFields(){
+                    idField.value = '';
+                    nameField.value = '';
+                    classField.value = '';
+                    rollField.value = '';
+                }
+
+                function lockFields(lock){
+                    // They are readonly inputs; we just keep them readonly and optionally style
+                    [idField, nameField, classField, rollField].forEach(f => {
+                        if (lock) {
+                            f.setAttribute('readonly','readonly');
+                            f.style.opacity = '0.95';
+                        } else {
+                            f.removeAttribute('readonly');
+                        }
+                    });
+                }
+
+                function findStudentById(id){
+                if (!window.DATA || !window.DATA.classes) return null;
+                const classes = window.DATA.classes;
+                for (const key in classes) {
+                    const cls = classes[key];
+                    if (!cls || !cls.students) continue;
+                    for (const s of cls.students) {
+                        if (!s || (s.id === undefined || s.id === null)) continue;
+                        try {
+                            if (String(s.id).toLowerCase() === String(id).toLowerCase()) {
+                                // normalize fields
+                                const studentName = s.name || s.Name || s.fullName || '';
+                                const studentClass = s.class || s.className || cls.className || key;
+                                const studentRoll = (s.roll !== undefined && s.roll !== null) ? s.roll : (s.Roll !== undefined ? s.Roll : '');
+                                return {
+                                    id: String(s.id),
+                                    name: studentName,
+                                    class: studentClass,
+                                    roll: String(studentRoll)
+                                };
+                            }
+                        } catch (err) {
+                            // ignore malformed entries
+                            continue;
+                        }
+                    }
+                }
+                return null;
+            }
+
+            // Wait/poll for DATA to be ready (in case class scripts are slow to load)
+            function ensureDataReady(timeoutMs = 2000) {
+                return new Promise((resolve) => {
+                    const start = Date.now();
+                    (function check(){
+                        if (window.DATA && window.DATA.classes && Object.keys(window.DATA.classes).length > 0) {
+                            resolve(true);
+                        } else if (Date.now() - start >= timeoutMs) {
+                            resolve(false);
+                        } else {
+                            setTimeout(check, 100);
+                        }
+                    })();
+                });
+            }
+
+            async function performSearch(value){
+                const trimmed = String(value || '').trim();
+                if (!trimmed) {
+                    setStatus('Please enter student ID to search', true, true);
+                    clearFields();
+                    return;
+                }
+
+                setStatus('Searching...');
+
+                const ready = await ensureDataReady(2000);
+                if (!ready) {
+                    // even if not ready, try one last time (maybe empty classes but present)
+                    if (!window.DATA || !window.DATA.classes) {
+                        setStatus('Student data not loaded yet. Please wait a moment.', true, true);
+                        return;
+                    }
+                }
+
+                const found = findStudentById(trimmed);
+                if (found) {
+                    idField.value = found.id;
+                    nameField.value = found.name;
+                    classField.value = found.class;
+                    rollField.value = found.roll;
+                    setStatus('Student found', true, false);
+                } else {
+                    clearFields();
+                    setStatus('Student not found', true, true);
+                }
+            }
+
+            // Debounced input handler
+            searchInput.addEventListener('input', function(e){
+                const v = this.value;
+                // keep sonId field locked while typing
+                lockFields(true);
+
+                if (timer) clearTimeout(timer);
+                // live search as user types, with small debounce to avoid too many loops
+                timer = setTimeout(() => {
+                    if (v === lastValue) return;
+                    lastValue = v;
+                    performSearch(v);
+                }, 250);
+            });
+
+            // On focus out, if empty, clear status after short delay
+            searchInput.addEventListener('blur', function(){
+                setTimeout(()=>{
+                    if (!this.value.trim()) setStatus('', false);
+                }, 400);
+            });
+
+                // Initialize: keep fields cleared & locked
+                clearFields();
+                lockFields(true);
+                setStatus('Please enter student ID to search', true, false);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+
+        function validateForm() {
+            // Clear any existing error messages
+            clearErrorMessages();
+            
+            // Check if a role is selected
+            const selectedRole = document.querySelector('.role-option.active');
+            if (!selectedRole) {
+                showErrorMessage('Please select your role first');
+                document.querySelector('.role-selector').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return false;
+            }
+            
+            const role = selectedRole.dataset.role;
+            let isValid = true;
+            let firstErrorElement = null;
+            let missingFields = [];
+
+            // Check basic required fields
+            const basicRequiredFields = [
+                { id: 'name', name: 'Full Name' },
+                { id: 'mobile', name: 'Mobile Number' },
+                { id: 'dob', name: 'Date of Birth' },
+                { id: 'village', name: 'Village' },
+                { id: 'union', name: 'Union' },
+                { id: 'upazila', name: 'Upazila' },
+                { id: 'district', name: 'District' },
+                { id: 'occupation', name: 'Occupation' }
+            ];
+            
+            for (let field of basicRequiredFields) {
+                const element = document.getElementById(field.id);
+                if (!element.value.trim() && !element.dataset.value) {
+                    element.style.borderColor = '#f44336';
+                    showFieldError(element, `${field.name} is required`);
+                    missingFields.push(field.name);
+                    if (!firstErrorElement) firstErrorElement = element;
+                    isValid = false;
+                } else {
+                    element.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                    clearFieldError(element);
+                }
+            }
+            
+            // Check role-specific required fields
+            if (role === 'student') {
+                const studentFields = [
+                    { id: 'schoolName', name: 'School Name' },
+                    { id: 'class', name: 'Class' },
+                    { id: 'roll', name: 'Roll Number' },
+                    { id: 'guardianRelation', name: 'Guardian Relationship' },
+                    { id: 'guardianOccupation', name: 'Guardian Occupation' },
+                    { id: 'guardianPhone', name: 'Guardian Phone' }
+                ];
+                
+                for (let field of studentFields) {
+                    const element = document.getElementById(field.id);
+                    if (!element.value.trim() && !element.dataset.value) {
+                        element.style.borderColor = '#f44336';
+                        showFieldError(element, `${field.name} is required`);
+                        missingFields.push(field.name);
+                        if (!firstErrorElement) firstErrorElement = element;
+                        isValid = false;
+                    } else {
+                        element.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                        clearFieldError(element);
+                    }
+                }
+                
+                // Check computer knowledge selection
+                const computerKnowledge = document.querySelector('input[name="computerKnowledge"]:checked');
+                if (!computerKnowledge) {
+                    const computerSection = document.querySelector('input[name="computerKnowledge"]').closest('.checkbox-group');
+                    showSectionError(computerSection, 'Please select your computer knowledge level');
+                    missingFields.push('Computer Knowledge');
+                    if (!firstErrorElement) firstErrorElement = computerSection;
+                    isValid = false;
+                } else {
+                    const computerSection = document.querySelector('input[name="computerKnowledge"]').closest('.checkbox-group');
+                    clearSectionError(computerSection);
+                }
+                
+                // Check school address if not same as home
+                const sameAddress = document.getElementById('sameAddress').checked;
+                if (!sameAddress) {
+                    const schoolAddressFields = [
+                        { id: 'schoolVillage', name: 'School Village' },
+                        { id: 'schoolUnion', name: 'School Union' },
+                        { id: 'schoolUpazila', name: 'School Upazila' },
+                        { id: 'schoolDistrict', name: 'School District' }
+                    ];
+                    
+                    for (let field of schoolAddressFields) {
+                        const element = document.getElementById(field.id);
+                        if (!element.value.trim() && !element.dataset.value) {
+                            element.style.borderColor = '#f44336';
+                            showFieldError(element, `${field.name} is required`);
+                            missingFields.push(field.name);
+                            if (!firstErrorElement) firstErrorElement = element;
+                            isValid = false;
+                        } else {
+                            element.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                            clearFieldError(element);
+                        }
+                    }
+                }
+            } else if (role === 'teacher') {
+                const teacherFields = [
+                    { id: 'currentOccupation', name: 'Current Occupation' },
+                    { id: 'teachingSubject', name: 'Teaching Subject' },
+                    { id: 'teacherSchoolName', name: 'School Name' }
+                ];
+                
+                for (let field of teacherFields) {
+                    const element = document.getElementById(field.id);
+                    if (!element.value.trim() && !element.dataset.value) {
+                        element.style.borderColor = '#f44336';
+                        showFieldError(element, `${field.name} is required`);
+                        missingFields.push(field.name);
+                        if (!firstErrorElement) firstErrorElement = element;
+                        isValid = false;
+                    } else {
+                        element.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                        clearFieldError(element);
+                    }
+                }
+                
+                // Check designation if current occupation is Teacher
+                const currentOccupation = document.getElementById('currentOccupation');
+                if (currentOccupation.dataset.value === 'Teacher') {
+                    const designation = document.getElementById('designation');
+                    if (!designation.value.trim() && !designation.dataset.value) {
+                        designation.style.borderColor = '#f44336';
+                        showFieldError(designation, 'Designation is required');
+                        missingFields.push('Designation');
+                        if (!firstErrorElement) firstErrorElement = designation;
+                        isValid = false;
+                    } else {
+                        designation.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                        clearFieldError(designation);
+                    }
+                }
+            } else if (role === 'parent') {
+                const parentStatus = document.querySelector('input[name="parentStatus"]:checked');
+                if (!parentStatus) {
+                    const parentSection = document.querySelector('input[name="parentStatus"]').closest('.checkbox-group');
+                    showSectionError(parentSection, 'Please select your parent status');
+                    missingFields.push('Parent Status');
+                    if (!firstErrorElement) firstErrorElement = parentSection;
+                    isValid = false;
+                } else {
+                    const parentSection = document.querySelector('input[name="parentStatus"]').closest('.checkbox-group');
+                    clearSectionError(parentSection);
+                    
+                    if (parentStatus.value === 'Already Applied') {
+                        const applicationSerial = document.getElementById('applicationSerial');
+                        if (!applicationSerial.value.trim()) {
+                            applicationSerial.style.borderColor = '#f44336';
+                            showFieldError(applicationSerial, 'Application Serial Number is required');
+                            missingFields.push('Application Serial Number');
+                            if (!firstErrorElement) firstErrorElement = applicationSerial;
+                            isValid = false;
+                        } else {
+                            applicationSerial.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                            clearFieldError(applicationSerial);
+                        }
+                    } else if (parentStatus.value === 'My Son is Student') {
+                        const sonFields = [
+                            { id: 'sonName', name: "Son's Name" },
+                            { id: 'sonId', name: "Son's ID" },
+                            { id: 'sonClass', name: "Son's Class" }
+                        ];
+                        
+                        for (let field of sonFields) {
+                            const element = document.getElementById(field.id);
+                            if (!element.value.trim()) {
+                                element.style.borderColor = '#f44336';
+                                showFieldError(element, `${field.name} is required`);
+                                missingFields.push(field.name);
+                                if (!firstErrorElement) firstErrorElement = element;
+                                isValid = false;
+                            } else {
+                                element.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                                clearFieldError(element);
+                            }
+                        }
+                    }
+                }
+            } else if (role === 'guest') {
+                const visitPurpose = document.getElementById('visitPurpose');
+                if (!visitPurpose.value.trim()) {
+                    visitPurpose.style.borderColor = '#f44336';
+                    showFieldError(visitPurpose, 'Purpose of Visit is required');
+                    missingFields.push('Purpose of Visit');
+                    if (!firstErrorElement) firstErrorElement = visitPurpose;
+                    isValid = false;
+                } else {
+                    visitPurpose.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                    clearFieldError(visitPurpose);
+                }
+            }
+
+            // Check required agreement checkboxes
+            const agreeTerms = document.getElementById('agreeTerms');
+            const confirmSubmission = document.getElementById('confirmSubmission');
+            
+            if (!agreeTerms.checked) {
+                const agreementSection = agreeTerms.closest('.checkbox-group');
+                showSectionError(agreementSection, 'Please check both agreement boxes to continue');
+                missingFields.push('Terms and Conditions Agreement');
+                if (!firstErrorElement) firstErrorElement = agreementSection;
+                isValid = false;
+            }
+            
+            if (!confirmSubmission.checked) {
+                const agreementSection = confirmSubmission.closest('.checkbox-group');
+                if (agreeTerms.checked) { // Only show this error if the first checkbox is checked
+                    showSectionError(agreementSection, 'Please check both agreement boxes to continue');
+                }
+                missingFields.push('Information Accuracy Confirmation');
+                if (!firstErrorElement) firstErrorElement = agreementSection;
+                isValid = false;
+            }
+            
+            if (agreeTerms.checked && confirmSubmission.checked) {
+                const agreementSection = agreeTerms.closest('.checkbox-group');
+                clearSectionError(agreementSection);
+            }
+
+            // Validate mobile number
+            const mobile = document.getElementById('mobile');
+            if (mobile.value && !/^[0-9]{11}$/.test(mobile.value)) {
+                mobile.style.borderColor = '#f44336';
+                showFieldError(mobile, 'Please enter a valid 11-digit mobile number');
+                if (!firstErrorElement) firstErrorElement = mobile;
+                isValid = false;
+            }
+
+            // Validate email
+            const email = document.getElementById('email');
+            if (email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                email.style.borderColor = '#f44336';
+                showFieldError(email, 'Please enter a valid email address');
+                if (!firstErrorElement) firstErrorElement = email;
+                isValid = false;
+            }
+
+            // If there are errors, scroll to the first error and show summary
+            if (!isValid && firstErrorElement) {
+                // Scroll to first error element
+                firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Show error summary
+                setTimeout(() => {
+                    showErrorMessage(`Please complete ${missingFields.length} required field${missingFields.length > 1 ? 's' : ''} highlighted in red.`);
+                }, 500);
+            }
+
+            return isValid;
+        }
+
+        function showFieldError(element, message) {
+            // Remove existing error message
+            clearFieldError(element);
+            
+            // Create error message element
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'field-error-message';
+            errorDiv.textContent = message;
+            errorDiv.style.cssText = `
+                color: #f44336;
+                font-size: 12px;
+                margin-top: 5px;
+                font-weight: 500;
+                animation: errorSlide 0.3s ease-out;
+            `;
+            
+            // Insert after the element's parent (form-group)
+            const formGroup = element.closest('.form-group') || element.closest('.custom-dropdown') || element.parentElement;
+            formGroup.appendChild(errorDiv);
+        }
+
+        function clearFieldError(element) {
+            const formGroup = element.closest('.form-group') || element.closest('.custom-dropdown') || element.parentElement;
+            const existingError = formGroup.querySelector('.field-error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+        }
+
+        function showSectionError(section, message) {
+            // Remove existing error message
+            clearSectionError(section);
+            
+            // Create error message element
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'section-error-message';
+            errorDiv.textContent = message;
+            errorDiv.style.cssText = `
+                color: #f44336;
+                font-size: 14px;
+                margin-top: 10px;
+                padding: 10px 15px;
+                background: rgba(244, 67, 54, 0.1);
+                border: 1px solid rgba(244, 67, 54, 0.3);
+                border-radius: 8px;
+                font-weight: 500;
+                animation: errorSlide 0.3s ease-out;
+            `;
+            
+            // Insert after the section
+            section.parentElement.appendChild(errorDiv);
+        }
+
+        function clearSectionError(section) {
+            const existingError = section.parentElement.querySelector('.section-error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+        }
+
+        function showErrorMessage(message) {
+            // Remove existing error message
+            const existingError = document.querySelector('.global-error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+            
+            // Create global error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'global-error-message';
+            errorDiv.textContent = message;
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #f44336, #d32f2f);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 12px;
+                font-weight: 600;
+                z-index: 10000;
+                box-shadow: 0 8px 32px rgba(244, 67, 54, 0.3);
+                animation: errorSlide 0.3s ease-out;
+                max-width: 90%;
+                text-align: center;
+            `;
+            
+            document.body.appendChild(errorDiv);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (errorDiv.parentElement) {
+                    errorDiv.remove();
+                }
+            }, 5000);
+        }
+
+        function clearErrorMessages() {
+            // Clear all error messages
+            document.querySelectorAll('.field-error-message, .section-error-message, .global-error-message').forEach(error => {
+                error.remove();
+            });
+        }
+
+        function collectFormData() {
+            const data = {};
+            
+            // Collect regular input values
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                if (input.type !== 'radio' && input.type !== 'checkbox') {
+                    data[input.name] = input.value;
+                } else if (input.checked) {
+                    data[input.name] = input.value;
+                }
+            });
+            
+            // Collect dropdown values
+            const dropdownInputs = document.querySelectorAll('.dropdown-input');
+            dropdownInputs.forEach(input => {
+                if (input.dataset.value) {
+                    data[input.name] = input.dataset.value;
+                }
+            });
+            
+            // Add serial number (both for display and for sheet field 'serial')
+            const serialDiv = document.getElementById('serialNumber');
+            const serialText = serialDiv ? (serialDiv.textContent || serialDiv.innerText || '') : '';
+            // extract part after ':' if present
+            const serialValue = (serialText.indexOf(':') !== -1) ? serialText.split(':').slice(1).join(':').trim() : serialText.trim();
+            data.serialNumber = serialText;
+            data.serial = serialValue;
+            // keep hidden input in sync (useful if other code reads form elements)
+            const serialInputEl = document.getElementById('serialInput');
+            if (serialInputEl) serialInputEl.value = serialValue;
+            
+            // Add selected role
+            const activeRole = document.querySelector('.role-option.active');
+            data.role = activeRole ? activeRole.dataset.role : '';
+            
+            return data;
+        }
+
+        function showAlert(data) {
+            let alertMessage = `Application Details:\n\n`;
+            alertMessage += `${data.serialNumber}\n`;
+            alertMessage += `Name: ${data.name}\n`;
+            alertMessage += `Mobile: ${data.mobile}\n`;
+            alertMessage += `Role: ${data.role}\n`;
+            
+            if (data.email) {
+                alertMessage += `Email: ${data.email}\n`;
+            }
+            
+            alert(alertMessage);
+        }
+
+        function generatePDF(data) {
+            const pdfContent = document.getElementById('pdfContent');
+            
+            let html = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="color: #4fc3f7; margin-bottom: 10px;">Application Form</h1>
+                    <h2 style="color: #4fc3f7; font-size: 18px;">${data.serialNumber}</h2>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <h3 style="color: #4fc3f7; border-bottom: 1px solid #4fc3f7; padding-bottom: 5px;">Basic Information</h3>
+                    <p><strong>Name:</strong> ${data.name}</p>
+                    <p><strong>Mobile:</strong> ${data.mobile}</p>
+                    ${data.email ? `<p><strong>Email:</strong> ${data.email}</p>` : ''}
+                    <p><strong>Date of Birth:</strong> ${data.dob}</p>
+                    <p><strong>Address:</strong> ${data.village}, ${data.union}, ${data.upazila}, ${data.district}</p>
+                    <p><strong>Occupation:</strong> ${data.occupation}</p>
+                    <p><strong>Role:</strong> ${data.role}</p>
+                </div>
+            `;
+
+            // Add role-specific information
+            if (data.role === 'student') {
+                html += `
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #4fc3f7; border-bottom: 1px solid #4fc3f7; padding-bottom: 5px;">Student Information</h3>
+                        <p><strong>School:</strong> ${data.schoolName}</p>
+                        <p><strong>Class:</strong> ${data.class}</p>
+                        <p><strong>Roll:</strong> ${data.roll}</p>
+                        <p><strong>Guardian:</strong> ${data.guardianRelation} (${data.guardianOccupation})</p>
+                        <p><strong>Guardian Phone:</strong> ${data.guardianPhone}</p>
+                        <p><strong>Computer Knowledge:</strong> ${data.computerKnowledge}</p>
+                    </div>
+                `;
+            } else if (data.role === 'teacher') {
+                html += `
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #4fc3f7; border-bottom: 1px solid #4fc3f7; padding-bottom: 5px;">Teacher Information</h3>
+                        <p><strong>Current Occupation:</strong> ${data.currentOccupation}</p>
+                        <p><strong>Teaching Subject:</strong> ${data.teachingSubject}</p>
+                        <p><strong>School:</strong> ${data.teacherSchoolName}</p>
+                        ${data.designation ? `<p><strong>Designation:</strong> ${data.designation}</p>` : ''}
+                    </div>
+                `;
+            } else if (data.role === 'parent') {
+                html += `
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #4fc3f7; border-bottom: 1px solid #4fc3f7; padding-bottom: 5px;">Parent Information</h3>
+                        <p><strong>Status:</strong> ${data.parentStatus}</p>
+                        ${data.applicationSerial ? `<p><strong>Application Serial:</strong> ${data.applicationSerial}</p>` : ''}
+                        ${data.sonName ? `<p><strong>Son's Name:</strong> ${data.sonName}</p>` : ''}
+                        ${data.sonId ? `<p><strong>Son's ID:</strong> ${data.sonId}</p>` : ''}
+                        ${data.sonClass ? `<p><strong>Son's Class:</strong> ${data.sonClass}</p>` : ''}
+                    </div>
+                `;
+            } else if (data.role === 'guest') {
+                html += `
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #4fc3f7; border-bottom: 1px solid #4fc3f7; padding-bottom: 5px;">Guest Information</h3>
+                        <p><strong>Purpose of Visit:</strong> ${data.visitPurpose}</p>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div style="margin-top: 40px; text-align: center; color: #b0bec5;">
+                    <p>Generated on: ${new Date().toLocaleString()}</p>
+                </div>
+            `;
+
+            pdfContent.innerHTML = html;
+            document.getElementById('pdfPreview').style.display = 'block';
+        }
+
+        function editForm() {
+            document.getElementById('pdfPreview').style.display = 'none';
+        }
+
+        function printPDF() {
+            window.print();
+        }
+
+        function closePDF() {
+            document.getElementById('pdfPreview').style.display = 'none';
+            clearForm();
+        }
+
+        // Submit button is always visible, validation happens on submit
+
+        function clearForm() {
+            document.getElementById('applicationForm').reset();
+            document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('active'));
+            document.querySelectorAll('.sub-form').forEach(form => form.classList.remove('active'));
+            document.querySelectorAll('.dropdown-input').forEach(input => {
+                input.value = '';
+                input.dataset.value = '';
+            });
+            document.querySelectorAll('.dropdown-option.selected').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.getElementById('serialNumber').textContent = `Serial: ${generateSerial()}`;
+        }
+
+        // Input guidance functions
+        function showInputGuidance(input) {
+            // Hide all other guidance messages first
+            document.querySelectorAll('.input-guidance.show').forEach(guidance => {
+                guidance.classList.remove('show');
+            });
+
+            // Find the guidance message for this input
+            const inputId = input.id || input.name;
+            const guidance = document.querySelector(`.input-guidance[data-for="${inputId}"]`);
+            
+            if (guidance) {
+                guidance.classList.add('show');
+            }
+        }
+
+        function hideInputGuidance(input) {
+            const inputId = input.id || input.name;
+            const guidance = document.querySelector(`.input-guidance[data-for="${inputId}"]`);
+            
+            if (guidance) {
+                guidance.classList.remove('show');
+            }
+        }
+
+        // Modal functions
+        function showRulesModal() {
+            document.getElementById('rulesModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRulesModal() {
+            document.getElementById('rulesModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('Please enter both email/mobile and password');
+                return;
+            }
+            
+            // Demo login - in real application, this would connect to a backend
+            alert('Login functionality is not implemented in this demo. This would connect to a secure authentication system.');
+            closeLoginModal();
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                if (e.target.id === 'rulesModal') {
+                    closeRulesModal();
+                } else if (e.target.id === 'loginModal') {
+                    closeLoginModal();
+                }
+            }
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeRulesModal();
+                closeLoginModal();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97dca991a1f97c40',t:'MTc1NzY1MTM1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

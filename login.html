@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 350px;
+    }
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #2575fc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #1a5edb;
+    }
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+    }
+    .message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .message.error {
+      background: #ffe6e6;
+      color: #ff3333;
+      border: 1px solid #ffcccc;
+    }
+    .message.success {
+      background: #e6ffe6;
+      color: #28a745;
+      border: 1px solid #ccffcc;
+    }
+    .loading {
+      position: relative;
+      pointer-events: none;
+    }
+    .loading:after {
+      content: "";
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ffffff;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: translateY(-50%) rotate(0deg); }
+      100% { transform: translateY(-50%) rotate(360deg); }
+    }
+    /* Password toggle styles (icon on the right, no background effect) */
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+      margin: 10px 0;
+    }
+    .password-wrapper input {
+      width: 100%;
+      padding-right: 48px; /* room for the toggle button */
+      box-sizing: border-box;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent; /* no background color */
+      border: none;
+      padding: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #666;
+      width: 36px; /* ensure it doesn't inherit full-width */
+      height: 36px;
+    }
+    .toggle-password:focus { outline: 2px solid rgba(37,117,252,0.12); border-radius: 6px; }
+    .toggle-password svg { display: block; }
+    .image {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h1><span><img class="image" src="profile222.png" alt="AH"> </span>AR TEACH PARK</h1>
+    <h2>Login</h2>
+    <label for="name">ID No</label>
+    <input type="text" id="userId" placeholder="Enter ID">
+    <div class="password-wrapper">
+      <label for="name">Password</label>
+      <input type="password" id="password" placeholder="Enter Password">
+      <button type="button" id="togglePassword" class="toggle-password" aria-label="Show password">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="3" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <button onclick="login()" id="loginBtn">Login</button>
+    <div id="msg" class="message"></div>
+  </div>
+
+  <script>
+    const msgDiv = document.getElementById("msg");
+    const loginBtn = document.getElementById("loginBtn");
+
+    function showMessage(message, type) {
+      msgDiv.textContent = message;
+      msgDiv.className = `message ${type} show`;
+      setTimeout(() => {
+        msgDiv.classList.remove('show');
+      }, 5000);
+    }
+
+    async function login() {
+      const id = document.getElementById("userId").value;
+      const password = document.getElementById("password").value;
+
+      // ভ্যালিডেশন চেক
+      if (!id || !password) {
+        showMessage("অনুগ্রহ করে আইডি এবং পাসওয়ার্ড উভয়ই দিন!", "error");
+        return;
+      }
+
+      try {
+        // লোডিং স্টেট
+        loginBtn.classList.add('loading');
+        loginBtn.textContent = 'প্রবেশ করা হচ্ছে...';
+
+        const response = await fetch("https://script.google.com/macros/s/AKfycbzeeTXe0oe0SZAVl9MLlZanEwA2OY6un5ocxnJ9mPnWeySvZHO7P7g0L9gpYzJImLew/exec", {
+          method: "POST",
+          body: JSON.stringify({ id, password })
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+          showMessage("সফলভাবে প্রবেশ করা হয়েছে! অনুগ্রহ করে অপেক্ষা করুন...", "success");
+          localStorage.setItem("user", JSON.stringify(result));
+          
+          // ১ সেকেন্ড পরে রিডাইরেক্ট করবে
+          setTimeout(() => {
+            if (result.role === "Student") {
+              window.location.href = "student_profile.html";
+            } else if (result.role === "Teacher") {
+              window.location.href = "teacher_profile.html";
+            } else if (result.role === "Admin") {
+              window.location.href = "admin_profile.html";
+            } else if (result.role === "Parents") {
+              window.location.href = "parents_profile.html";
+            }
+          }, 1000);
+        } else {
+          showMessage("ভুল আইডি অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।", "error");
+        }
+      } catch (error) {
+        showMessage("ভুল আইডি অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।", "error");
+      } finally {
+        // লোডিং স্টেট রিমুভ
+        loginBtn.classList.remove('loading');
+        loginBtn.textContent = 'Login';
+      }
+    }
+    
+      // Enter key handling: trigger login when user presses Enter in either input
+      const userInput = document.getElementById('userId');
+      const passInput = document.getElementById('password');
+      const toggleBtn = document.getElementById('togglePassword');
+
+      function handleEnterKey(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (loginBtn.classList.contains('loading')) return; // already logging in
+          login();
+        }
+      }
+
+      // Icons for toggle: eye (visible) and eye-off (hidden). We keep simple SVGs inline.
+      const eyeIcon = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="3" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+
+      const eyeOffIcon = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M2 2l20 20" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8 1.73-3.38 4.44-5.86 7.43-7.05" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+
+      function togglePasswordVisibility() {
+        const isPassword = passInput.type === 'password';
+        passInput.type = isPassword ? 'text' : 'password';
+        // use eyeOff icon when visible (so clicking again hides)
+        toggleBtn.innerHTML = isPassword ? eyeOffIcon : eyeIcon;
+        toggleBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+      }
+
+      // Initialize button icon (ensure it shows eye by default)
+      if (toggleBtn) toggleBtn.innerHTML = eyeIcon;
+      if (toggleBtn) toggleBtn.addEventListener('click', togglePasswordVisibility);
+
+      userInput.addEventListener('keydown', handleEnterKey);
+      passInput.addEventListener('keydown', handleEnterKey);
+  </script>
+</body>
+</html>
